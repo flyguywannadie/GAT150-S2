@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio", "..\..\CSC196 C++ Programming II\Projects\CSC196-Game\Source\Engine\Audio\Audio.vcxproj", "{7CD74136-DD45-4525-B1E5-35EC0A173C79}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Source\Game\Game\Game.vcxproj", "{97D340BD-1493-41A7-832E-9FB44F8B251C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "..\..\CSC196 C++ Programming II\Projects\CSC196-Game\Source\Engine\Core\Core.vcxproj", "{A48A9E50-8A10-4D09-BAA7-CB784A4651E2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio", "Source\Engine\Audio\Audio.vcxproj", "{7CD74136-DD45-4525-B1E5-35EC0A173C79}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Frame", "..\..\CSC196 C++ Programming II\Projects\CSC196-Game\Source\Engine\Frame\Frame.vcxproj", "{CDEC75DF-67B4-4250-AE53-A0453E9A936E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Source\Engine\Core\Core.vcxproj", "{A48A9E50-8A10-4D09-BAA7-CB784A4651E2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Input", "..\..\CSC196 C++ Programming II\Projects\CSC196-Game\Source\Engine\Input\Input.vcxproj", "{E50AB876-09B2-49F2-B1AE-459C0B642DE0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Frame", "Source\Engine\Frame\Frame.vcxproj", "{CDEC75DF-67B4-4250-AE53-A0453E9A936E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer", "..\..\CSC196 C++ Programming II\Projects\CSC196-Game\Source\Engine\Renderer\Renderer.vcxproj", "{778683F3-BE41-406D-80F5-6A6E7EA15AC4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Input", "Source\Engine\Input\Input.vcxproj", "{E50AB876-09B2-49F2-B1AE-459C0B642DE0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "..\..\CSC196 C++ Programming II\Projects\CSC196-Game\Source\Game\Game\Game.vcxproj", "{97D340BD-1493-41A7-832E-9FB44F8B251C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Renderer", "Source\Engine\Renderer\Renderer.vcxproj", "{778683F3-BE41-406D-80F5-6A6E7EA15AC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +23,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x64.ActiveCfg = Debug|x64
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x64.Build.0 = Debug|x64
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x86.ActiveCfg = Debug|Win32
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x86.Build.0 = Debug|Win32
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x64.ActiveCfg = Release|x64
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x64.Build.0 = Release|x64
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x86.ActiveCfg = Release|Win32
+		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x86.Build.0 = Release|Win32
 		{7CD74136-DD45-4525-B1E5-35EC0A173C79}.Debug|x64.ActiveCfg = Debug|x64
 		{7CD74136-DD45-4525-B1E5-35EC0A173C79}.Debug|x64.Build.0 = Debug|x64
 		{7CD74136-DD45-4525-B1E5-35EC0A173C79}.Debug|x86.ActiveCfg = Debug|Win32
@@ -63,14 +71,6 @@ Global
 		{778683F3-BE41-406D-80F5-6A6E7EA15AC4}.Release|x64.Build.0 = Release|x64
 		{778683F3-BE41-406D-80F5-6A6E7EA15AC4}.Release|x86.ActiveCfg = Release|Win32
 		{778683F3-BE41-406D-80F5-6A6E7EA15AC4}.Release|x86.Build.0 = Release|Win32
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x64.ActiveCfg = Debug|x64
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x64.Build.0 = Debug|x64
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x86.ActiveCfg = Debug|Win32
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Debug|x86.Build.0 = Debug|Win32
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x64.ActiveCfg = Release|x64
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x64.Build.0 = Release|x64
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x86.ActiveCfg = Release|Win32
-		{97D340BD-1493-41A7-832E-9FB44F8B251C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

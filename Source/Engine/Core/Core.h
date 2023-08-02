@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Logger.h"
 #include "Core/Random.h"
 #include "Core/FileIO.h"
 #include "Core/memory.h"

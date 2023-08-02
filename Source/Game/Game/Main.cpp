@@ -22,6 +22,8 @@ using vec2 = max::Vector2;
 
 int main(int argc, char* argv[])
 {
+	INFO_LOG;
+
 	max::MemoryTracker::Initialize();
 	max::seedRandom((unsigned int)time(nullptr));
 	max::setFilePath("assets");
