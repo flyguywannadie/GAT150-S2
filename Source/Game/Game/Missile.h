@@ -3,8 +3,8 @@
 
 class Missile : public max::Actor {
 public:
-	Missile(const max::Transform& transform, std::shared_ptr<max::Model> model) :
-		max::Actor{ transform, model }
+	Missile(const max::Transform& transform) :
+		max::Actor{ transform }
 	{
 	};
 

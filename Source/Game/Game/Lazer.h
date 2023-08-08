@@ -3,8 +3,8 @@
 
 class Lazer : public max::Actor {
 public:
-	Lazer(const max::Transform& transform, std::shared_ptr<max::Model> model) :
-		max::Actor{ transform, model }
+	Lazer(const max::Transform& transform) :
+		max::Actor{ transform }
 	{
 	};
 

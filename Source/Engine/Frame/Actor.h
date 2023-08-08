@@ -2,6 +2,7 @@
 #include "Core/Core.h"
 #include "Renderer/Model.h"
 #include <memory>
+#include "Frame/Component/Component.h"
 
 namespace max
 {
@@ -10,20 +11,20 @@ namespace max
 	public:
 		Actor() = default;
 		Actor(const max::Transform& transform) : m_transform{ transform } {};
-		Actor(const max::Transform transform, std::shared_ptr<Model> model) : m_transform{ transform }, m_model{ model } {};
 		virtual ~Actor() {}
 
 		virtual void Update(float dt);
 		virtual void Draw(max::Renderer& renderer);
 
+		void AddComponent(std::unique_ptr<Component> component);
+		template<typename T>
+		T* GetComponent();
+
 		float GetRadius() {
-			return (m_model) ? m_model->GetRadius() * m_transform.scale : (m_tag != "") ? 0 : -10000;
+			return 30.0f;//(m_model) ? m_model->GetRadius() * m_transform.scale : (m_tag != "") ? 0 : -10000;
 		}
 		virtual void OnCollision(Actor* other) {}
 		virtual void OnCreate();
-
-		void AddForce(const vec2 force) { m_velocity += force; }
-		void SetDamping(float damping) { m_damping = damping; }
 
 		friend class Squisher;
 		friend class Scene;
@@ -38,11 +39,20 @@ namespace max
 		float m_lifespan = -1.0f;
 
 	protected:
+		std::vector<std::unique_ptr<Component>> m_components;
+
 		bool m_destroyed = false;
-
-		std::shared_ptr<Model> m_model;
-
-		max::vec2 m_velocity;
-		float m_damping = 0.25;
 	};
+
+	template<typename T>
+	inline T* Actor::GetComponent()
+	{
+		for (auto& actor : m_components) {
+			T* result = dynamic_cast<T*>(actor.get());
+			if (result) {
+				return result;
+			}
+		}
+		return nullptr;
+	}
 }

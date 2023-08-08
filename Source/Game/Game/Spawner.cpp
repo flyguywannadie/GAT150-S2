@@ -17,16 +17,16 @@ void Spawner::Update(float dt)
 			std::unique_ptr<Enemy> enemy;
 			switch ((int)m_spawns[currentSpawn].x) {
 			case 0:
-				enemy = std::make_unique<Slug>(max::randomf(75.0f, 100.0f), 1000, 5, max::Transform{{m_transform.position}, 0, 1.5f}, max::g_ModelManager.Get("slug.txt"));
+				enemy = std::make_unique<Slug>(max::randomf(75.0f, 100.0f), 1000, 5, max::Transform{{m_transform.position}, 0, 1.5f});
 				break;
 			case 1:
-				enemy = std::make_unique<Beetle>(50.0f, 6000, 0, max::Transform{ {m_transform.position}, 0, 2.0f }, max::g_ModelManager.Get("Beetle.txt"));
+				enemy = std::make_unique<Beetle>(50.0f, 6000, 0, max::Transform{ {m_transform.position}, 0, 2.0f });
 				break;
 			case 2:
-				enemy = std::make_unique<Slug>(250.0f, 1000, 10, max::Transform{ {m_transform.position}, 0, 0.5f }, max::g_ModelManager.Get("fly.txt"));
+				enemy = std::make_unique<Slug>(250.0f, 1000, 10, max::Transform{ {m_transform.position}, 0, 0.5f });
 				break;
 			case 3:
-				enemy = std::make_unique<BigBeetle>(25.0f, 1000000, 25, max::Transform{ {m_transform.position}, 0, 3.0f }, max::g_ModelManager.Get("bigbeetle.txt"));
+				enemy = std::make_unique<BigBeetle>(25.0f, 1000000, 25, max::Transform{ {m_transform.position}, 0, 3.0f });
 				break;
 			}
 			enemy->m_tag = "Enemy";

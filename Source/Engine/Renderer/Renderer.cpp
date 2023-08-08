@@ -1,6 +1,8 @@
 #include "Renderer.h"
 #include <SDL2-2.28.0/include/SDL.h>
 #include "SDL2-2.28.0/include/SDL_ttf.h"
+#include "SDL2-2.28.0/include/SDL_image.h"
+#include "Texture.h"
 
 namespace max
 {
@@ -9,6 +11,7 @@ namespace max
 	bool Renderer::Initialize()
 	{
 		SDL_Init(SDL_INIT_VIDEO);
+		IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 		TTF_Init();
 
 		return true;
@@ -19,6 +22,7 @@ namespace max
 		SDL_DestroyRenderer(m_renderer);
 		SDL_DestroyWindow(m_window);
 		TTF_Quit();
+		IMG_Quit();
 	}
 
 	void Renderer::CreateWindow(const std::string& title, int width, int height)
@@ -69,4 +73,16 @@ namespace max
 		SDL_RenderDrawPoint(m_renderer, (int)x, (int)y);
 	}
 
+	void Renderer::DrawTexture(Texture* texture, float x, float y, float angle)
+	{
+		vec2 size = texture->GetSize();
+
+		SDL_Rect dest;
+		dest.x = (int)(x - (size.x * 0.5f));
+		dest.y = (int)(y - (size.y * 0.5f));
+		dest.w = size.x;
+		dest.h = size.y;
+		// https://wiki.libsdl.org/SDL2/SDL_RenderCopyEx
+		SDL_RenderCopyEx(m_renderer, texture->m_texture, NULL, &dest, angle, NULL, SDL_FLIP_NONE);
+	}
 }

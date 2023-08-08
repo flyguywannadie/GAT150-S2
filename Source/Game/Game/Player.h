@@ -3,8 +3,8 @@
 
 class Player : public max::Actor {
 public:
-	Player(float speed, float turnRate, const max::Transform& transform, std::shared_ptr<max::Model> model) :
-		max::Actor{ transform, model },
+	Player(float speed, float turnRate, const max::Transform& transform) :
+		max::Actor{ transform },
 		m_speed{ speed },
 		m_turnRate{ turnRate }
 	{

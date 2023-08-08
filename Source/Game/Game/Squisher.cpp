@@ -7,6 +7,9 @@
 
 #include "Frame/Scene.h"
 #include "Frame/Emitter.h"
+#include "Frame/Component/SpriteComponent.h"
+#include "Frame/Component/ModelRenderComponent.h"
+#include "Frame/Resource/ResourceManager.h"
 
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
@@ -17,10 +20,10 @@
 bool Squisher::Initialize()
 {
 	// Create Font/Text
-	m_aeromaxfont = std::make_shared<max::Font>("AEROMAX-Bold.ttf", 50);
-	m_speedracerfont = std::make_shared<max::Font>("RaceStripeDemoRegular.ttf", 50);
-	m_orangejuicefont = std::make_shared<max::Font>("orange juice 2.0.ttf", 30);
-	m_mondeur = std::make_shared<max::Font>("data-latin.ttf", 30);
+	m_aeromaxfont = max::g_resourceManager.Get<max::Font>("AEROMAX-Bold.ttf", 50);
+	m_speedracerfont = max::g_resourceManager.Get<max::Font>("RaceStripeDemoRegular.ttf", 50);
+	m_orangejuicefont = max::g_resourceManager.Get<max::Font>("orange juice 2.0.ttf", 30);
+	m_mondeur = max::g_resourceManager.Get<max::Font>("data-latin.ttf", 30);
 
 	m_titleText = std::make_unique<max::Text>(m_speedracerfont);
 	m_titleText->Create(max::g_renderer, "SQUISHER", max::Color{ 1, 1, 1, 1 });
@@ -104,10 +107,22 @@ void Squisher::Update(float dt)
 	case Squisher::eState::StartLevel:
 		m_scene->RemoveAll();
 		{
-			std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {400,300}, 0, 3 }, max::g_ModelManager.Get("box.txt"));
+			// create player
+			std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {400,300}, 0, 3 });
 			player->m_tag = "Player";
 			player->m_game = this;
+
+			std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
+			component->m_model = std::move(max::g_ModelManager.Get("box.txt"));
+			//component->m_texture = max::g_resourceManager.Get<max::Texture>("box1.png", max::g_renderer);
+			player->AddComponent(std::move(component));
+
 			m_scene->Add(std::move(player));
+
+			// create components
+			//std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
+			//component->m_texture = max::g_resourceManager.Get<max::Texture>("blue-wooden-chair.png", max::g_renderer);
+			//player->AddComponent(std::move(component));
 		}
 		m_state = eState::StartWave;
 		break;
@@ -148,17 +163,27 @@ void Squisher::Update(float dt)
 			switch (m_weaponSelect) {
 			case 1:
 			{
-				std::unique_ptr<Lazer> lazer = std::make_unique<Lazer>(max::Transform{ {max::g_inputSystem.GetMousePosition()},0,1 }, max::g_ModelManager.Get("lazerhit.txt"));
+				std::unique_ptr<Lazer> lazer = std::make_unique<Lazer>(max::Transform{ {max::g_inputSystem.GetMousePosition()},0,1 });
 				lazer->m_tag = "Lazer";
 				lazer->m_game = this;
+
+				std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
+				component->m_texture = max::g_resourceManager.Get<max::Texture>("blue-wooden-chair.png", max::g_renderer);
+				lazer->AddComponent(std::move(component));
+
 				m_scene->Add(std::move(lazer));
 			}
 				break;
 			case 2:
 			{
-				std::unique_ptr<Missile> missile = std::make_unique<Missile>(max::Transform{ {max::g_inputSystem.GetMousePosition()},0,1 }, max::g_ModelManager.Get("missile.txt"));
+				std::unique_ptr<Missile> missile = std::make_unique<Missile>(max::Transform{ {max::g_inputSystem.GetMousePosition()},0,1 });
 				missile->m_tag = "missile";
 				missile->m_game = this;
+
+				std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
+				component->m_texture = max::g_resourceManager.Get<max::Texture>("missile.png", max::g_renderer);
+				missile->AddComponent(std::move(component));
+
 				m_scene->Add(std::move(missile));
 			}
 				break;

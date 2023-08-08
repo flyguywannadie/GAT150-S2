@@ -1,11 +1,12 @@
 #pragma once
 #include "Core/Core.h"
 #include "Renderer.h"
+#include "Frame/Resource/Resource.h"
 #include <vector>
 
 namespace max
 {
-	class Model
+	class Model : public Resource
 	{
 	public:
 		Model() = default;
@@ -19,6 +20,8 @@ namespace max
 		float GetRadius();
 		std::vector<vec2> GetPoints() const { return m_points; }
 		Color GetColor() const { return m_color; };
+
+		virtual bool Create(std::string filename, ...) override;
 
 	private:
 		float m_radius = 0;

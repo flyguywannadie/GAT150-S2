@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace max {
-	Logger g_logger{LogLevel::Info, &std::cout};
+	Logger g_logger{LogLevel::Info, &std::cout, "log.txt"};
 
 	bool Logger::Log(LogLevel loglevel, const std::string filename, int line)
 	{
@@ -12,22 +12,22 @@ namespace max {
 		switch (loglevel)
 		{
 		case Info:
-			*m_ostream << "INFO: ";
+			*this << "INFO: ";
 			break;
 		case Warning:
-			*m_ostream << "WARNING: ";
+			*this << "WARNING: ";
 			break;
 		case Error:
-			*m_ostream << "ERROR: ";
+			*this << "ERROR: ";
 			break;
 		case Assert:
-			*m_ostream << "ASSERT: ";
+			*this << "ASSERT: ";
 			break;
 		default:
 			break;
 		}
 
-		*m_ostream << getFileName(filename) << "(" << line << ")\n";;
+		*this << getFileName(filename) << "(" << line << ") ";;
 
 		return true;
 	}

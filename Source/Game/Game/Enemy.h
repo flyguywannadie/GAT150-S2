@@ -9,8 +9,8 @@
 
 class Enemy : public max::Actor {
 public:
-	Enemy(float speed, int health, int fuelreward, const max::Transform& transform, std::shared_ptr<max::Model> model) :
-		max::Actor{ transform, model },
+	Enemy(float speed, int health, int fuelreward, const max::Transform& transform) :
+		max::Actor{ transform},
 		m_speed{ speed },
 		m_health{ health },
 		m_fuelReward{ fuelreward }

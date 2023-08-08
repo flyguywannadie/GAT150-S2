@@ -7,22 +7,26 @@
 #include "Enemy.h"
 #include "Audio/AudioSystem.h"
 #include "Frame/Scene.h"
+#include "Frame/Resource/ResourceManager.h"
 #include "Renderer/Font.h"
 #include "Renderer/Text.h"
 #include "Frame/Emitter.h"
+#include "Renderer/Texture.h"
 
 #include "Squisher.h"
 
 #include <vector>
 #include <thread>
 #include <memory>
+#include <array>
 
 using namespace std;
 using vec2 = max::Vector2;
 
 int main(int argc, char* argv[])
 {
-	INFO_LOG;
+
+	INFO_LOG ("Hello World");
 
 	max::MemoryTracker::Initialize();
 	max::seedRandom((unsigned int)time(nullptr));
@@ -34,6 +38,8 @@ int main(int argc, char* argv[])
 	max::g_inputSystem.Initialize();
 
 	max::g_audioSystem.Initialize();
+
+	//max::res_t<max::Texture> texture = max::g_resourceManager.Get<max::Texture>("blue-wooden-chair.png", max::g_renderer);
 
 	// Create Game
 	unique_ptr<Squisher> game = make_unique<Squisher>();
@@ -61,6 +67,9 @@ int main(int argc, char* argv[])
 
 		// draw stuff
 		game->Draw(max::g_renderer);
+
+		//max::g_renderer.DrawTexture(texture.get(), 0.0f, 0.0f, 0.0f);
+
 		max::g_renderer.EndFrame();
 	}
 	game->Shutdown();

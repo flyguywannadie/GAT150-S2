@@ -3,8 +3,8 @@
 
 class Slug : public Enemy {
 public:
-	Slug(float speed, int health, int fuelreward,const max::Transform& transform, std::shared_ptr<max::Model> model) :
-		Enemy{speed, health, fuelreward, transform, model }
+	Slug(float speed, int health, int fuelreward,const max::Transform& transform) :
+		Enemy{speed, health, fuelreward, transform }
 	{};
 
 	void OnCollision(Actor* other) override;

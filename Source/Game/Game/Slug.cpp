@@ -33,7 +33,7 @@ void Slug::OnCollision(Actor* other) {
 		data.speedMin = 50;
 		data.speedMax = 150;
 		data.damping = 0.5f;
-		data.color = m_model->GetColor();;
+		data.color = max::Color{ 0.1, 0.1, 0.1, 1 }; //m_model->GetColor();;
 		max::Transform transform{ { m_transform.position.x, m_transform.position.y }, 0, 1 };
 		auto emitter = std::make_unique<max::Emitter>(transform, data);
 		emitter->m_lifespan = 1.0f;

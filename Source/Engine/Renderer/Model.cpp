@@ -26,6 +26,11 @@ bool max::Model::Load(const std::string& filename)
 	return true;
 }
 
+bool max::Model::Create(std::string filename, ...)
+{
+	return Load(filename);
+}
+
 void max::Model::Draw(Renderer& renderer, const vec2& position, float rotation, float scale)
 {
 	if (m_points.empty()) {

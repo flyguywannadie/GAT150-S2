@@ -4,6 +4,7 @@
 #include "Frame/Emitter.h"
 #include "Squisher.h"
 #include "Renderer/ModelManager.h"
+#include "Frame/Component/ModelRenderComponent.h"
 
 void Missile::OnCreate()
 {
@@ -37,7 +38,11 @@ void Missile::Update(float dt)
 			emitter->m_tag = "BigBoom";
 			m_scene->Add(std::move(emitter));
 
-			m_model = max::g_ModelManager.Get("bigboom.txt");
+			m_components.clear();
+			std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
+			component->m_model = std::move(max::g_ModelManager.Get("bigboom.txt"));
+			//component->m_texture = max::g_resourceManager.Get<max::Texture>("box1.png", max::g_renderer);
+			AddComponent(std::move(component));
 			m_tag = "BigBoom";
 			hit = true;
 		}
