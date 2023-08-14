@@ -1,6 +1,7 @@
 #pragma once
 #include "Frame/Resource/Resource.h"
 #include <string>
+
 struct _TTF_Font;
 namespace max
 {

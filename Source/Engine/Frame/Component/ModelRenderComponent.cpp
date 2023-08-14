@@ -1,6 +1,5 @@
 #include "ModelRenderComponent.h"
 #include "Frame/Actor.h"
-#include "Renderer/Renderer.h"
 
 namespace max
 {

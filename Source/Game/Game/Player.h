@@ -1,5 +1,7 @@
 #pragma once
 #include "Frame/Actor.h"
+#include "Frame/Component/PhysicsComponent.h"
+#include "Frame/Component/ModelRenderComponent.h"
 
 class Player : public max::Actor {
 public:
@@ -10,6 +12,8 @@ public:
 	{
 		m_health = 10;
 	};
+
+	bool Initialize() override;
 
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
@@ -27,4 +31,7 @@ private:
 	float m_moveDistance = 12; // The distance it will travel per movement action
 	int moveanim = 1;
 	max::vec2 m_moveDir{0,0};
+
+	max::PhysicsComponent* m_physicsComponent = nullptr;
+	max::ModelRenderComponent* m_modelRenderComponent = nullptr;
 };

@@ -4,11 +4,25 @@
 
 namespace max
 {
-	void Actor::OnCreate() {
+	bool Actor::Initialize()
+	{
+		for (auto& component : m_components)
+		{
+			component->Initialize();
+		}
 
+		return true;
 	}
 
-	void Actor::Update(float dt) 
+	void Actor::OnDestroy()
+	{
+		for (auto& component : m_components)
+		{
+			component->OnDestroy();
+		}
+	}
+
+	void Actor::Update(float dt)
 	{
 		if (m_lifespan != -1.0f && !m_destroyed) {
 			m_lifespan -= dt;

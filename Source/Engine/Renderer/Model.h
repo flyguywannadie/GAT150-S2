@@ -1,11 +1,12 @@
 #pragma once
 #include "Core/Core.h"
-#include "Renderer.h"
 #include "Frame/Resource/Resource.h"
 #include <vector>
 
 namespace max
 {
+	class Renderer;
+
 	class Model : public Resource
 	{
 	public:

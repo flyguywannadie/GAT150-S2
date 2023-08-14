@@ -1,6 +1,6 @@
 #pragma once
 #include "Frame/Actor.h"
-#include "Core/Vector2.h"
+#include "Core/Math/Vector2.h"
 #include "Renderer/Model.h"
 
 class GameTrack : public max::Actor {
@@ -12,7 +12,7 @@ public:
 
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
-	void OnCreate() override;
+	bool Initialize() override;
 
 	void Draw(max::Renderer& renderer) override;
 

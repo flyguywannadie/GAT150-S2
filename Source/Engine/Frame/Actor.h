@@ -1,4 +1,5 @@
 #pragma once
+#include "Object.h"
 #include "Core/Core.h"
 #include "Renderer/Model.h"
 #include <memory>
@@ -6,12 +7,15 @@
 
 namespace max
 {
-	class Actor
+	class Actor : public Object
 	{
 	public:
 		Actor() = default;
 		Actor(const max::Transform& transform) : m_transform{ transform } {};
-		virtual ~Actor() {}
+		//virtual ~Actor() {}
+
+		virtual bool Initialize() override;
+		virtual void OnDestroy() override;
 
 		virtual void Update(float dt);
 		virtual void Draw(max::Renderer& renderer);
@@ -24,7 +28,6 @@ namespace max
 			return 30.0f;//(m_model) ? m_model->GetRadius() * m_transform.scale : (m_tag != "") ? 0 : -10000;
 		}
 		virtual void OnCollision(Actor* other) {}
-		virtual void OnCreate();
 
 		friend class Squisher;
 		friend class Scene;

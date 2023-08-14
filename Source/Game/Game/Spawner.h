@@ -4,9 +4,8 @@
 
 class Spawner : public max::Actor {
 public:
-	Spawner(const max::Transform& transform, std::shared_ptr<max::Model> model, std::vector<max::vec2> spawns) :
+	Spawner(const max::Transform& transform, std::vector<max::vec2> spawns) :
 		max::Actor{ transform }, 
-		m_model{ model },
 		m_spawns{ spawns }
 	{};
 	~Spawner() {
@@ -23,8 +22,6 @@ public:
 
 private:
 	float m_spawnTimer = 0;
-
-	std::shared_ptr<max::Model> m_model;
 
 	std::vector<max::vec2> m_spawns;
 	int currentSpawn = 0;

@@ -1,1 +1,2 @@
-INFO: Main.cpp(29) Hello World
+INFO: Main.cpp(25) Initialize Engine
+INFO: Squisher.cpp(103) START LEVEL

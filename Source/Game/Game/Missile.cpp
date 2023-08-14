@@ -3,13 +3,16 @@
 #include "Frame/Scene.h"
 #include "Frame/Emitter.h"
 #include "Squisher.h"
-#include "Renderer/ModelManager.h"
+#include "Renderer/Renderer.h"
+#include "Frame/Resource/ResourceManager.h"
 #include "Frame/Component/ModelRenderComponent.h"
 
-void Missile::OnCreate()
+bool Missile::Initialize()
 {
 	dynamic_cast<Squisher*>(m_game)->m_fuel -= 20;
 	dynamic_cast<Squisher*>(m_game)->SetWeaponTimer(1.5f);
+
+	return true;
 }
 
 void Missile::Update(float dt)
@@ -40,7 +43,7 @@ void Missile::Update(float dt)
 
 			m_components.clear();
 			std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
-			component->m_model = std::move(max::g_ModelManager.Get("bigboom.txt"));
+			component->m_model = std::move(max::g_resourceManager.Get<max::Model>("bigboom.txt", max::g_renderer));
 			//component->m_texture = max::g_resourceManager.Get<max::Texture>("box1.png", max::g_renderer);
 			AddComponent(std::move(component));
 			m_tag = "BigBoom";

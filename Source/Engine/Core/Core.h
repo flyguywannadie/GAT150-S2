@@ -6,7 +6,7 @@
 #include "Core/Time.h"
 
 // math
-#include "Core/Vector2.h"
-#include "Core/Transform.h"
-#include "Core/MathUtils.h"
-#include "Color.h"
+#include "Math/Vector2.h"
+#include "Math/Transform.h"
+#include "Math/MathUtils.h"
+#include "Math/Color.h"

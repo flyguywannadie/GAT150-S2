@@ -5,16 +5,11 @@
 #include "Missile.h"
 #include "GameTrack.h"
 
-#include "Frame/Scene.h"
-#include "Frame/Emitter.h"
-#include "Frame/Component/SpriteComponent.h"
-#include "Frame/Component/ModelRenderComponent.h"
-#include "Frame/Resource/ResourceManager.h"
+#include "Frame/framework.h"
 
 #include "Audio/AudioSystem.h"
 #include "Input/InputSystem.h"
 #include "Renderer/Renderer.h"
-#include "Renderer/ModelManager.h"
 #include "Renderer/Text.h"
 
 bool Squisher::Initialize()
@@ -105,6 +100,7 @@ void Squisher::Update(float dt)
 		m_state = eState::StartLevel;
 		break;
 	case Squisher::eState::StartLevel:
+		INFO_LOG("START LEVEL");
 		m_scene->RemoveAll();
 		{
 			// create player
@@ -113,9 +109,13 @@ void Squisher::Update(float dt)
 			player->m_game = this;
 
 			std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
-			component->m_model = std::move(max::g_ModelManager.Get("box.txt"));
+			component->m_model = max::g_resourceManager.Get<max::Model>("box.txt", max::g_renderer);
 			//component->m_texture = max::g_resourceManager.Get<max::Texture>("box1.png", max::g_renderer);
 			player->AddComponent(std::move(component));
+
+			auto collisionComponent = std::make_unique<max::CircleCollisionComponent>();
+			collisionComponent->m_radius = 30.0f;
+			player->AddComponent(std::move(collisionComponent));
 
 			m_scene->Add(std::move(player));
 
@@ -129,18 +129,18 @@ void Squisher::Update(float dt)
 	case Squisher::eState::StartWave:
 		m_tracksDone = 0;
 		if (m_stageSelect == 1) {
-			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_ModelManager.Get("track1.txt"));
+			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_resourceManager.Get<max::Model>("track1.txt", max::g_renderer));
 			gametrack->m_game = this;
 			m_scene->Add(std::move(gametrack));
 			m_trackCount = 1;
 			m_finalWave = 4;
 		}
 		else {
-			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_ModelManager.Get("track2.txt"));
+			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_resourceManager.Get<max::Model>("track2.txt", max::g_renderer));
 			gametrack->m_game = this;
 			m_scene->Add(std::move(gametrack));
 
-			gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_ModelManager.Get("track2a.txt"));
+			gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_resourceManager.Get<max::Model>("track2a.txt", max::g_renderer));
 			gametrack->m_game = this;
 			m_scene->Add(std::move(gametrack));
 			m_trackCount = 2;
@@ -163,7 +163,7 @@ void Squisher::Update(float dt)
 			switch (m_weaponSelect) {
 			case 1:
 			{
-				std::unique_ptr<Lazer> lazer = std::make_unique<Lazer>(max::Transform{ {max::g_inputSystem.GetMousePosition()},0,1 });
+				std::unique_ptr<Lazer> lazer = std::make_unique<Lazer>(max::Transform{ {max::g_inputSystem.GetMousePosition()},0,0.05f });
 				lazer->m_tag = "Lazer";
 				lazer->m_game = this;
 

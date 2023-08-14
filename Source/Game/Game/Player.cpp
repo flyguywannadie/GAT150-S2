@@ -1,12 +1,30 @@
 #include "Player.h"
 #include "Input/InputSystem.h"
 #include "Squisher.h"
-#include "Frame/Scene.h"
 #include "Audio/AudioSystem.h"
-#include "Frame/Emitter.h"
-#include "Renderer/ModelManager.h"
-#include "Frame/Component/ModelRenderComponent.h"
-#include "Frame/Component/Component.h"
+#include "Renderer/Renderer.h"
+
+#include "Frame/framework.h"
+
+bool Player::Initialize()
+{
+	Actor::Initialize();
+
+	m_physicsComponent = GetComponent<max::PhysicsComponent>();
+	m_modelRenderComponent = GetComponent<max::ModelRenderComponent>();
+
+	auto collisionComponent = GetComponent<max::CollisionComponent>();
+
+	if (collisionComponent) {
+		auto renderComponent = GetComponent<max::RenderComponent>();
+		if (renderComponent) {
+			float scale = m_transform.scale;
+			collisionComponent->m_radius = renderComponent->GetRadius() * scale;
+		}
+	}
+
+	return true;
+}
 
 void Player::Update(float dt)
 {
@@ -48,7 +66,7 @@ void Player::Update(float dt)
 			if (moveanim > 4) {
 				moveanim = 1;
 				m_moveDir = { 0,0 };
-				GetComponent<max::ModelRenderComponent>()->m_model = max::g_ModelManager.Get("box.txt");
+				m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("box.txt", max::g_renderer);
 			}
 		}
 	}
@@ -57,13 +75,13 @@ void Player::Update(float dt)
 
 	switch (moveanim) {
 	case (2):
-		GetComponent<max::ModelRenderComponent>()->m_model = max::g_ModelManager.Get("boxmove1.txt");
+		m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("boxmove1.txt", max::g_renderer);
 		break;
 	case (3):
-		GetComponent<max::ModelRenderComponent>()->m_model = max::g_ModelManager.Get("boxmove2.txt");
+		m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("boxmove2.txt", max::g_renderer);
 		break;
 	case (4):
-		GetComponent<max::ModelRenderComponent>()->m_model = max::g_ModelManager.Get("boxmove3.txt");
+		m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("boxmove3.txt", max::g_renderer);
 		break;
 	}
 

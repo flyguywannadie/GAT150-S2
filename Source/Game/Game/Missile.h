@@ -10,7 +10,7 @@ public:
 
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
-	void OnCreate() override;
+	bool Initialize() override;
 
 private:
 	bool hit = false;

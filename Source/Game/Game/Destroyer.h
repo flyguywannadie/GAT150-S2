@@ -4,14 +4,14 @@
 
 class Destroyer : public max::Actor {
 public:
-	Destroyer(const max::Transform& transform, std::shared_ptr<max::Model> model) :
-		max::Actor{ transform },
-		m_model{ model }
-	{};
+	Destroyer(const max::Transform& transform) :
+		max::Actor{ transform }
+	{
+
+	};
 
 	void Update(float dt) override;
 	void OnCollision(Actor* other) override;
 
 private:
-	std::shared_ptr<max::Model> m_model;
 };

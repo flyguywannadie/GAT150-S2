@@ -1,12 +1,15 @@
 #pragma once
-#include "Renderer.h"
 #include "Font.h"
-#include "Core/Color.h"
+#include "Core/Math/Color.h"
 #include <string>
 #include <memory>
 
+struct SDL_Texture;
+
 namespace max
 {
+	class Renderer;
+
 	class Text
 	{
 	public:
@@ -17,6 +20,6 @@ namespace max
 		void Draw(Renderer& renderer, int x, int y);
 	private:
 		std::shared_ptr<Font> m_font;
-		struct SDL_Texture* m_texture = nullptr;
+		SDL_Texture* m_texture = nullptr;
 	};
 }

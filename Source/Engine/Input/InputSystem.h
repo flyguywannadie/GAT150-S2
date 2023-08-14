@@ -1,8 +1,9 @@
 #pragma once
 #include <vector>
 #include <array>
-#include "Core/Vector2.h"
+#include "Core/Math/Vector2.h"
 #include <SDL2-2.28.0/include/SDL.h>
+
 namespace max
 {
 	class InputSystem

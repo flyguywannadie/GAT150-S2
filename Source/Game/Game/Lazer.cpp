@@ -4,10 +4,13 @@
 #include "Frame/Emitter.h"
 #include "Squisher.h"
 
-void Lazer::OnCreate() 
+bool Lazer::Initialize() 
 {
 	dynamic_cast<Squisher*>(m_game)->SetFuelTimer(0.1f);
 	dynamic_cast<Squisher*>(m_game)->m_fuel--;
+	baseScale = m_transform.scale;
+
+	return true;
 }
 
 void Lazer::Update(float dt)
@@ -46,7 +49,7 @@ void Lazer::Update(float dt)
 		m_scene->Add(std::move(emitter));
 
 		m_transform.rotation = max::randomf(max::Pi);
-		m_transform.scale = max::randomf(2, 1);
+		m_transform.scale = max::randomf( baseScale * 0.5, baseScale * 0.15);
 	}
 
 	if (!max::g_inputSystem.GetMouseButtonDown(0) || dynamic_cast<Squisher*>(m_game)->m_fuel <= 0) {
