@@ -5,6 +5,8 @@
 #include "Missile.h"
 #include "GameTrack.h"
 
+#include "Core/Logger.h"
+
 #include "Frame/framework.h"
 
 #include "Audio/AudioSystem.h"
@@ -15,10 +17,10 @@
 bool Squisher::Initialize()
 {
 	// Create Font/Text
-	m_aeromaxfont = max::g_resourceManager.Get<max::Font>("AEROMAX-Bold.ttf", 50);
-	m_speedracerfont = max::g_resourceManager.Get<max::Font>("RaceStripeDemoRegular.ttf", 50);
-	m_orangejuicefont = max::g_resourceManager.Get<max::Font>("orange juice 2.0.ttf", 30);
-	m_mondeur = max::g_resourceManager.Get<max::Font>("data-latin.ttf", 30);
+	m_aeromaxfont = GET_RESOURCE(max::Font, "AEROMAX-Bold.ttf", 50);
+	m_speedracerfont = GET_RESOURCE(max::Font, "RaceStripeDemoRegular.ttf", 50);
+	m_orangejuicefont = GET_RESOURCE(max::Font, "orange juice 2.0.ttf", 30);
+	m_mondeur = GET_RESOURCE(max::Font, "data-latin.ttf", 30);
 
 	m_titleText = std::make_unique<max::Text>(m_speedracerfont);
 	m_titleText->Create(max::g_renderer, "SQUISHER", max::Color{ 1, 1, 1, 1 });
@@ -109,7 +111,7 @@ void Squisher::Update(float dt)
 			player->m_game = this;
 
 			std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
-			component->m_model = max::g_resourceManager.Get<max::Model>("box.txt", max::g_renderer);
+			component->m_model = GET_RESOURCE(max::Model, "box.txt", max::g_renderer);
 			//component->m_texture = max::g_resourceManager.Get<max::Texture>("box1.png", max::g_renderer);
 			player->AddComponent(std::move(component));
 
@@ -129,18 +131,18 @@ void Squisher::Update(float dt)
 	case Squisher::eState::StartWave:
 		m_tracksDone = 0;
 		if (m_stageSelect == 1) {
-			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_resourceManager.Get<max::Model>("track1.txt", max::g_renderer));
+			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, GET_RESOURCE(max::Model, "track1.txt", max::g_renderer));
 			gametrack->m_game = this;
 			m_scene->Add(std::move(gametrack));
 			m_trackCount = 1;
 			m_finalWave = 4;
 		}
 		else {
-			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_resourceManager.Get<max::Model>("track2.txt", max::g_renderer));
+			std::unique_ptr<GameTrack> gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, GET_RESOURCE(max::Model, "track2.txt", max::g_renderer));
 			gametrack->m_game = this;
 			m_scene->Add(std::move(gametrack));
 
-			gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, max::g_resourceManager.Get<max::Model>("track2a.txt", max::g_renderer));
+			gametrack = std::make_unique<GameTrack>(max::Transform{ {400,300}, 0, 28.5 }, GET_RESOURCE(max::Model, "track2a.txt", max::g_renderer));
 			gametrack->m_game = this;
 			m_scene->Add(std::move(gametrack));
 			m_trackCount = 2;
@@ -168,7 +170,7 @@ void Squisher::Update(float dt)
 				lazer->m_game = this;
 
 				std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
-				component->m_texture = max::g_resourceManager.Get<max::Texture>("blue-wooden-chair.png", max::g_renderer);
+				component->m_texture = GET_RESOURCE(max::Texture, "blue-wooden-chair.png", max::g_renderer);
 				lazer->AddComponent(std::move(component));
 
 				m_scene->Add(std::move(lazer));
@@ -181,7 +183,7 @@ void Squisher::Update(float dt)
 				missile->m_game = this;
 
 				std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
-				component->m_texture = max::g_resourceManager.Get<max::Texture>("missile.png", max::g_renderer);
+				component->m_texture = GET_RESOURCE(max::Texture, "missile.png", max::g_renderer);
 				missile->AddComponent(std::move(component));
 
 				m_scene->Add(std::move(missile));

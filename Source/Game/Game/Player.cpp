@@ -66,7 +66,7 @@ void Player::Update(float dt)
 			if (moveanim > 4) {
 				moveanim = 1;
 				m_moveDir = { 0,0 };
-				m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("box.txt", max::g_renderer);
+				m_modelRenderComponent->m_model = GET_RESOURCE(max::Model, "box.txt", max::g_renderer);
 			}
 		}
 	}
@@ -75,13 +75,13 @@ void Player::Update(float dt)
 
 	switch (moveanim) {
 	case (2):
-		m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("boxmove1.txt", max::g_renderer);
+		m_modelRenderComponent->m_model = GET_RESOURCE(max::Model,"boxmove1.txt", max::g_renderer);
 		break;
 	case (3):
-		m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("boxmove2.txt", max::g_renderer);
+		m_modelRenderComponent->m_model = GET_RESOURCE(max::Model,"boxmove2.txt", max::g_renderer);
 		break;
 	case (4):
-		m_modelRenderComponent->m_model = max::g_resourceManager.Get<max::Model>("boxmove3.txt", max::g_renderer);
+		m_modelRenderComponent->m_model = GET_RESOURCE(max::Model,"boxmove3.txt", max::g_renderer);
 		break;
 	}
 

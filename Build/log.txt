@@ -1,2 +1,3 @@
-INFO: Main.cpp(25) Initialize Engine
-INFO: Squisher.cpp(103) START LEVEL
+INFO: Main.cpp(24) Initialize Engine
+WARNING: Json.cpp(25) Json file cannot be parsed: Json.txt
+INFO: Squisher.cpp(105) START LEVEL

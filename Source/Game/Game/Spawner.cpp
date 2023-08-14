@@ -21,19 +21,19 @@ void Spawner::Update(float dt)
 			switch ((int)m_spawns[currentSpawn].x) {
 			case 0:
 				enemy = std::make_unique<Slug>(max::randomf(75.0f, 100.0f), 1000, 5, max::Transform{{m_transform.position}, 0, 1.5f});
-				component->m_model = std::move(max::g_resourceManager.Get<max::Model>("slug.txt", max::g_renderer));
+				component->m_model = GET_RESOURCE(max::Model, "slug.txt", max::g_renderer);
 				break;
 			case 1:
 				enemy = std::make_unique<Beetle>(50.0f, 6000, 0, max::Transform{ {m_transform.position}, 0, 2.0f });
-				component->m_model = std::move(max::g_resourceManager.Get<max::Model>("beetle.txt", max::g_renderer));
+				component->m_model = GET_RESOURCE(max::Model, "beetle.txt", max::g_renderer);
 				break;
 			case 2:
 				enemy = std::make_unique<Slug>(250.0f, 1000, 10, max::Transform{ {m_transform.position}, 0, 0.5f });
-				component->m_model = std::move(max::g_resourceManager.Get<max::Model>("fly.txt", max::g_renderer));
+				component->m_model = GET_RESOURCE(max::Model, "fly.txt", max::g_renderer);
 				break;
 			case 3:
 				enemy = std::make_unique<BigBeetle>(25.0f, 1000000, 25, max::Transform{ {m_transform.position}, 0, 3.0f });
-				component->m_model = std::move(max::g_resourceManager.Get<max::Model>("bigbeetle.txt", max::g_renderer));
+				component->m_model = GET_RESOURCE(max::Model, "bigbeetle.txt", max::g_renderer);
 				break;
 			}
 			enemy->m_tag = "Enemy";

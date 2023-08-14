@@ -22,9 +22,6 @@
     <ClCompile Include="Emitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\ResourceManager.cpp">
-      <Filter>Source Files\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="Component\SpriteComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
@@ -86,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="Component\CircleCollisionComponent.h">
       <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

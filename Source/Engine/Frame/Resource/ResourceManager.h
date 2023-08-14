@@ -3,11 +3,13 @@
 #include <map>
 #include <memory>
 #include <string>
+#include "Frame/Singleton.h"
 
+#define GET_RESOURCE(type, filename, ...) max::ResourceManager::Instance().Get<type>(filename, __VA_ARGS__)
 
 namespace max
 {
-	class ResourceManager
+	class ResourceManager : public Singleton<ResourceManager>
 	{
 	public:
 		template<typename T, typename ... TArgs>
@@ -29,6 +31,4 @@ namespace max
 
 		return resource;
 	}
-
-	extern ResourceManager g_resourceManager;
 }

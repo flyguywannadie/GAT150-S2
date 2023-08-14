@@ -142,7 +142,6 @@
     <ClCompile Include="Component\ModelRenderComponent.cpp" />
     <ClCompile Include="Component\SpriteComponent.cpp" />
     <ClCompile Include="Emitter.cpp" />
-    <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +161,7 @@
     <ClInclude Include="Resource\Resource.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Singleton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

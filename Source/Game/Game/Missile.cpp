@@ -43,7 +43,7 @@ void Missile::Update(float dt)
 
 			m_components.clear();
 			std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
-			component->m_model = std::move(max::g_resourceManager.Get<max::Model>("bigboom.txt", max::g_renderer));
+			component->m_model = GET_RESOURCE(max::Model, "bigboom.txt", max::g_renderer);
 			//component->m_texture = max::g_resourceManager.Get<max::Texture>("box1.png", max::g_renderer);
 			AddComponent(std::move(component));
 			m_tag = "BigBoom";

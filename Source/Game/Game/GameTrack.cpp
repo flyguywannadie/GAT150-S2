@@ -18,7 +18,7 @@ bool GameTrack::Initialize()
 	destroyer->m_game = this->m_game;
 
 	std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
-	component->m_model = max::g_resourceManager.Get<max::Model>("track1.txt", max::g_renderer);
+	component->m_model = GET_RESOURCE(max::Model, "track1.txt", max::g_renderer);
 	destroyer->AddComponent(std::move(component));
 
 	std::unique_ptr<max::CircleCollisionComponent> collisionComponent = std::make_unique<max::CircleCollisionComponent>();
@@ -64,7 +64,7 @@ void GameTrack::StartWave() {
 	spawner->m_track = this;
 
 	std::unique_ptr<max::ModelRenderComponent> component = std::make_unique<max::ModelRenderComponent>();
-	component->m_model = max::g_resourceManager.Get<max::Model>("track1.txt", max::g_renderer);
+	component->m_model = GET_RESOURCE(max::Model, "track1.txt", max::g_renderer);
 	spawner->AddComponent(std::move(component));
 
 	m_scene->Add(std::move(spawner));
