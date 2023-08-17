@@ -1,5 +1,8 @@
 #include "Model.h"
 #include "Renderer.h"
+#include "Game/Squisher.h"
+#include "Frame/Scene.h"
+#include "Game/Player.h"
 #include <sstream>
 
 bool max::Model::Load(const std::string& filename)
@@ -66,15 +69,27 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 
 	for (int i = 0; i < m_points.size(); i++) {
 		vec2 p1, p2;
+
 		if (i + 1 < m_points.size()) {
 			p1 = (mx * m_points[i]);
 			p2 = (mx * m_points[i + 1]);
 		}
 		else {
-			p1 = (mx * m_points[i]);
-			p2 = (mx * m_points[0]);
+			//p1 = (mx * m_points[i]);
+			//p2 = (mx * m_points[0]);
 		}
-		renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+
+		vec2 p11 = p1 - Squisher::Instance().GetScene()->GetActor<Player>()->transform.position;
+		vec2 p21 = p2 - Squisher::Instance().GetScene()->GetActor<Player>()->transform.position;
+
+		if (Squisher::Instance().GetScene()->GetActor<Player>()->InView(p11, p21)) {
+
+			// Arc length formula
+			// Theta   
+			//  360  = 
+
+			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+		}
 	}
 }
 

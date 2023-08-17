@@ -3,7 +3,6 @@
 #include <iostream>
 
 namespace max {
-	Logger g_logger{LogLevel::Info, &std::cout, "log.txt"};
 
 	bool Logger::Log(LogLevel loglevel, const std::string filename, int line)
 	{

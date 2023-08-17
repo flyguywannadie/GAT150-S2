@@ -1,8 +1,18 @@
 #include "ModelRenderComponent.h"
 #include "Frame/Actor.h"
+#include "Frame/Resource/ResourceManager.h"
 
 namespace max
 {
+	CLASS_DEFINITION(ModelRenderComponent);
+
+	bool ModelRenderComponent::Initialize()
+	{
+		//m_model = GET_RESOURCE(Model, modelName);
+
+		return true;
+	}
+
 	void ModelRenderComponent::Update(float dt)
 	{
 
@@ -10,7 +20,11 @@ namespace max
 
 	void ModelRenderComponent::Draw(Renderer& renderer)
 	{
-		m_model->Draw(renderer, m_owner->m_transform);
+		m_model->Draw(renderer, m_owner->transform);
 		// m_model->Draw(renderer, m_owner->
+	}
+
+	void ModelRenderComponent::Read(const json_t& value) {
+		READ_DATA(value, modelName);
 	}
 }

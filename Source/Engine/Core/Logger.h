@@ -1,13 +1,15 @@
 #pragma once
+#include "Frame/Singleton.h"
 #include <string>
 #include <fstream>
+#include <iostream>
 #include <cassert>
 
 #ifdef _DEBUG
-#define INFO_LOG(message)		{ if (max::g_logger.Log(max::LogLevel::Info, __FILE__, __LINE__)) { max::g_logger << message << "\n"; } }
-#define WARNING_LOG(message)	{ if(max::g_logger.Log(max::LogLevel::Warning, __FILE__, __LINE__)){ max::g_logger << message << "\n"; } }
-#define ERROR_LOG(message)		{ if(max::g_logger.Log(max::LogLevel::Error, __FILE__, __LINE__)){ max::g_logger << message << "\n"; } }
-#define ASSERT_LOG(condition, message)		{ if (!condition && max::g_logger.Log(max::LogLevel::Assert, __FILE__, __LINE__)){ max::g_logger << message << "\n"; } assert(condition);}
+#define INFO_LOG(message)		{ if (max::Logger::Instance().Log(max::LogLevel::Info, __FILE__, __LINE__)) { max::Logger::Instance() << message << "\n"; } }
+#define WARNING_LOG(message)	{ if(max::Logger::Instance().Log(max::LogLevel::Warning, __FILE__, __LINE__)){ max::Logger::Instance() << message << "\n"; } }
+#define ERROR_LOG(message)		{ if(max::Logger::Instance().Log(max::LogLevel::Error, __FILE__, __LINE__)){ max::Logger::Instance() << message << "\n"; } }
+#define ASSERT_LOG(condition, message)		{ if (!condition && max::Logger::Instance().Log(max::LogLevel::Assert, __FILE__, __LINE__)){ max::Logger::Instance() << message << "\n"; } assert(condition);}
 #else
 #define INFO_LOG(message){}
 #define WARNING_LOG(message){}
@@ -23,9 +25,10 @@ namespace max {
 		Assert
 	};
 
-	class Logger {
+	class Logger : public Singleton<Logger> 
+	{
 	public:
-		Logger(LogLevel loglevel, std::ostream* ostream, const std::string& filename = "") : 
+		Logger(LogLevel loglevel = LogLevel::Info, std::ostream* ostream = &std::cout, const std::string& filename = "log.txt") : 
 			m_logLevel{loglevel}, 
 			m_ostream{ostream} 
 		{
@@ -44,8 +47,6 @@ namespace max {
 		std::ostream* m_ostream = nullptr;
 		std::ofstream m_fstream;
 	};
-
-	extern Logger g_logger;
 
 	template<typename T>
 	inline Logger& Logger::operator<<(T value) {

@@ -10,8 +10,10 @@ namespace max
 	class Actor : public Object
 	{
 	public:
+		CLASS_DECLERATION(Actor)
+
 		Actor() = default;
-		Actor(const max::Transform& transform) : m_transform{ transform } {};
+		Actor(const max::Transform& transform) : transform{ transform } {};
 		//virtual ~Actor() {}
 
 		virtual bool Initialize() override;
@@ -31,26 +33,25 @@ namespace max
 
 		friend class Squisher;
 		friend class Scene;
-		friend class Lazer;
 
 		class Scene* m_scene = nullptr;
 		class Game* m_game = nullptr;
 
-		max::Transform m_transform;
-		std::string m_tag;
-
-		float m_lifespan = -1.0f;
+	public:
+		max::Transform transform;
+		std::string tag;
+		float lifespan = -1.0f;
+		bool destroyed = false;
 
 	protected:
-		std::vector<std::unique_ptr<Component>> m_components;
+		std::vector<std::unique_ptr<Component>> components;
 
-		bool m_destroyed = false;
 	};
 
 	template<typename T>
 	inline T* Actor::GetComponent()
 	{
-		for (auto& actor : m_components) {
+		for (auto& actor : components) {
 			T* result = dynamic_cast<T*>(actor.get());
 			if (result) {
 				return result;

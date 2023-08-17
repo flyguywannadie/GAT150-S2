@@ -6,6 +6,8 @@ namespace max
 	class EnginePhysicsComponent : public PhysicsComponent
 	{
 	public:
+		CLASS_DECLERATION(EnginePhysicsComponent)
+
 		// Inherited via PhysicsComponent
 		virtual void Update(float dt) override;
 

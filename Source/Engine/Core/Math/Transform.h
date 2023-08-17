@@ -2,6 +2,7 @@
 #include "Core/Math/Vector2.h"
 #include "Matrix2x2.h"
 #include "Matrix3x3.h"
+#include "Core/Json.h"
 
 namespace max
 {
@@ -19,6 +20,8 @@ namespace max
 			rotation{ rotation },
 			scale{ scale } {};
 
+
+
 		mat3 GetMatrix() const
 		{
 			mat3 ms = mat3::CreateScale(scale);
@@ -27,5 +30,7 @@ namespace max
 			
 			return mt * ms * mr;
 		}
+
+		void Read(const json_t& value);
 	};
 }

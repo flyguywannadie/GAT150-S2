@@ -3,7 +3,7 @@
 #include "Renderer/Renderer.h"
 #include "Input/InputSystem.h"
 #include "Player.h"
-#include "Enemy.h"
+#include "EnemyComponent.h"
 #include "Audio/AudioSystem.h"
 
 #include "Frame/framework.h"
@@ -55,11 +55,8 @@ int main(int argc, char* argv[])
 
 	max::g_audioSystem.Initialize();
 
-
-
 	// Create Game
-	unique_ptr<Squisher> game = make_unique<Squisher>();
-	game->Initialize();
+	Squisher::Instance().Initialize();
 
 	bool quit = false;
 	while (!quit) {
@@ -75,20 +72,20 @@ int main(int argc, char* argv[])
 		}
 
 		// update game
-		game->Update(max::g_time.GetDeltaTime());
+		Squisher::Instance().Update(max::g_time.GetDeltaTime());
 
 		// draw game
 		max::g_renderer.SetColor((uint8_t)0.5f, 1, (uint8_t)0.5f, 0);
 		max::g_renderer.BeginFrame();
 
 		// draw stuff
-		game->Draw(max::g_renderer);
+		Squisher::Instance().Draw(max::g_renderer);
 
 		//max::g_renderer.DrawTexture(texture.get(), 0.0f, 0.0f, 0.0f);
 
 		max::g_renderer.EndFrame();
 	}
-	game->Shutdown();
+	Squisher::Instance().Shutdown();
 	max::MemoryTracker::DisplayInfo();
 
 

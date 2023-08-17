@@ -13,34 +13,13 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
+    <ClCompile Include="EnemyComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Squisher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lazer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTrack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Spawner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Beetle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BigBeetle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Slug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Destroyer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Missile.cpp">
+    <ClCompile Include="Walls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,34 +27,13 @@
     <ClInclude Include="Player.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
+    <ClInclude Include="EnemyComponent.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Squisher.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lazer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTrack.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Spawner.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Slug.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Beetle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BigBeetle.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Destroyer.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Missile.h">
+    <ClInclude Include="Walls.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
