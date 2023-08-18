@@ -8,8 +8,9 @@ namespace max {
 	CLASS_DEFINITION(SpriteComponent);
 
 	bool SpriteComponent::Initialize() {
-		m_texture = GET_RESOURCE(Texture, textureName);
-
+		if (!textureName.empty()) {
+			m_texture = GET_RESOURCE(Texture, textureName, max::g_renderer);
+		}
 		return true;
 	}
 

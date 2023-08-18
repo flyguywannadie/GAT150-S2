@@ -22,6 +22,7 @@ public:
 	bool InView(max::vec2& point);
 	bool InView(max::vec2& point1, max::vec2& point2);
 
+	float m_viewAngle = 25.0f;
 
 private:
 	float speed = 0;
@@ -31,7 +32,6 @@ private:
 	float m_grounded = 3.0f;
 	float m_jumping = 5.0f;
 
-	float m_viewAngle = 25.0f;
 
 	max::PhysicsComponent* m_physicsComponent = nullptr;
 	max::ModelRenderComponent* m_modelRenderComponent = nullptr;

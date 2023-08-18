@@ -1,6 +1,6 @@
 #include "Squisher.h"
 #include "Player.h"
-#include "EnemyComponent.h"
+#include "Enemy.h"
 #include "Walls.h"
 
 #include "Core/Logger.h"
@@ -36,6 +36,8 @@ bool Squisher::Initialize()
 
 	// Load Scene, Player, and Enemies
 	m_scene = std::make_unique<max::Scene>();
+	m_scene->Load("scene.json");
+	m_scene->Initialize();
 
 	//for (int i = 0; i < 10; i++) {
 	//	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(max::randomf(75.0f, 200.0f), max::Pi, max::Transform{ {max::random(800), max::random(600)}, max::randomf(0, 360), 2 }, max::g_ModelManager.Get("ship.txt"));
@@ -74,7 +76,7 @@ void Squisher::Update(float dt)
 		m_scene->RemoveAll();
 		{
 			// create player
-			std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {400,300}, 0, 3 });
+			std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {313.289f,125.338f}, 1.11f, 1 });
 			player->tag = "Player";
 			player->m_game = this;
 

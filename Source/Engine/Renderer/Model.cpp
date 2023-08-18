@@ -79,16 +79,84 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 			//p2 = (mx * m_points[0]);
 		}
 
-		vec2 p11 = p1 - Squisher::Instance().GetScene()->GetActor<Player>()->transform.position;
-		vec2 p21 = p2 - Squisher::Instance().GetScene()->GetActor<Player>()->transform.position;
+		auto* player = Squisher::Instance().GetScene()->GetActor<Player>();
 
-		if (Squisher::Instance().GetScene()->GetActor<Player>()->InView(p11, p21)) {
+		vec2 p11 = p1 - player->transform.position;
+		vec2 p21 = p2 - player->transform.position;
+
+		if (player->InView(p11, p21)) {
+
+			//renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
 
 			// Arc length formula
-			// Theta   
-			//  360  = 
+			// Theta        arc
+			//  360  = circumference
+
+			// arc = (Theta/360) * Circumference
+
+			// find the difference in arc length between camera view and point positions
+			// that will be the x position on screen
+
+			float walldistance = p11.Distance(0);
+			float walldistance2 = p21.Distance(0);
+
+			float viewAngleMax = max::RadToDeg(player->transform.rotation) + player->m_viewAngle;
+			if (viewAngleMax >= 360) {
+				viewAngleMax -= 360;
+			} else if (viewAngleMax < 0) {
+				viewAngleMax += 360;
+			}
+			float viewAngleMin = max::RadToDeg(player->transform.rotation) - player->m_viewAngle;
+			if (viewAngleMin >= 360) {
+				viewAngleMin -= 360;
+			} else if (viewAngleMin < 0) {
+				viewAngleMin += 360;
+			}
+			
+			float arclengthCameraStartP1 = (viewAngleMax/360.0f) * (walldistance * 2.0f * max::Pi);
+			float arclengthCameraEndP1 = (viewAngleMin/360.0f) * (walldistance * 2.0f * max::Pi);
+			
+			float pangle = atan2(p11.y, p11.x);
+			if (pangle >= max::TwoPi) {
+				pangle -= max::TwoPi;
+			} else if (pangle < 0) {
+				pangle += max::TwoPi;
+			}
+			float arclengthPoint1 = (pangle/max::TwoPi) * (walldistance * 2.0f * max::Pi);
+
+			float arclengthCameraStartP2 = ((player->transform.rotation + max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
+			float arclengthCameraEndP2 = ((player->transform.rotation - max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
+
+			pangle = atan2(p21.y, p21.x);
+			if (pangle >= max::TwoPi) {
+				pangle -= max::TwoPi;
+			}else if (pangle < 0) {
+				pangle += max::TwoPi;
+			}
+			float arclengthPoint2 = (pangle / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
+
+			p1.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint1 - arclengthCameraStartP1) / (arclengthCameraEndP1 - arclengthCameraStartP1)));
+			p2.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint2 - arclengthCameraStartP2) / (arclengthCameraEndP2 - arclengthCameraStartP2)));
+
+			// find the distance from the player .
+			// some ratio of that would determine how high and low the line is drawn on screen.
+
+			float windowheight = renderer.GetHeight();
+			float wallheight = 15.0f;
+			float playerviewangle = tanf(player->m_viewAngle);
+			float viewheightp1 = (tanf(player->m_viewAngle) * (walldistance));
+			float viewheightp2 = (tanf(player->m_viewAngle) * (walldistance2));
+
+			p1.y = (windowheight / 2) - ((wallheight / abs(viewheightp1)) * (windowheight / 2));
+			p2.y = (windowheight / 2) - ((wallheight / abs(viewheightp2)) * (windowheight / 2));
 
 			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+
+			float bottomp1y = ((windowheight) - p1.y);
+			float bottomp2y = ((windowheight) - p2.y);
+
+			renderer.DrawLine(p1.x, bottomp1y, p2.x, bottomp2y);
+			renderer.DrawLine(p2.x, p2.y, p2.x, bottomp2y);
 		}
 	}
 }

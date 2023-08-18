@@ -4,5 +4,4 @@ INFO: Factory.h(51) Class Registered: EnginePhysicsComponent
 INFO: Factory.h(51) Class Registered: CircleCollisionComponent
 INFO: Factory.h(51) Class Registered: Actor
 INFO: Main.cpp(24) Initialize Engine
-WARNING: Json.cpp(25) Json file cannot be parsed: Json.txt
-INFO: Squisher.cpp(73) START LEVEL
+INFO: Squisher.cpp(75) START LEVEL

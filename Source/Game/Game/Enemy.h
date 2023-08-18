@@ -1,5 +1,5 @@
 #pragma once
-#include "Frame/Component/Component.h"
+#include "Frame/Actor.h"
 #include "Frame/Emitter.h"
 #include "Audio/AudioSystem.h"
 #include "Squisher.h"
@@ -7,7 +7,7 @@
 
 namespace max
 {
-	class EnemyComponent : public max::Component {
+	class Enemy : public max::Actor {
 	public:
 		//Enemy(float speed, int health, const max::Transform& transform) :
 		//	max::Actor{ transform},
@@ -19,7 +19,7 @@ namespace max
 		void Update(float dt) override;
 		void OnCollision(Actor* other);
 
-		void Read(const json_t& value);
+		//void Read(const json_t& value);
 
 	protected:
 		float speed = 0;

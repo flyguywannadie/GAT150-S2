@@ -20,7 +20,7 @@ namespace max
         rapidjson::IStreamWrapper istream(stream);
         // parse stream to json
         document.ParseStream(istream);
-        if (!document.HasParseError())
+        if (document.HasParseError())
         {
             WARNING_LOG("Json file cannot be parsed: " << filename);
             return false;

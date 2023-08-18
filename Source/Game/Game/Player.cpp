@@ -30,6 +30,8 @@ void Player::Update(float dt)
 {
 	Actor::Update(dt);
 
+	//std::cout << transform.position << std::endl;
+
 	if (transform.rotation > max::TwoPi) {
 		transform.rotation = 0;
 	}
@@ -91,15 +93,17 @@ void Player::Update(float dt)
 		}
 	}
 
-	transform.position.x = max::Wrap(transform.position.x, (float)max::g_renderer.GetWidth());
-	transform.position.y = max::Wrap(transform.position.y, (float)max::g_renderer.GetHeight());
+	//transform.position.x = max::Wrap(transform.position.x, (float)max::g_renderer.GetWidth());
+	//transform.position.y = max::Wrap(transform.position.y, (float)max::g_renderer.GetHeight());
 }
 
 void Player::Draw(max::Renderer& renderer) {
 	Actor::Draw(renderer);
 
-	renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).y);
-	renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).y);
+	//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
+
+	//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).y);
+	//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).y);
 }
 
 void Player::OnCollision(Actor* other)
@@ -149,7 +153,11 @@ bool Player::InView(max::vec2& point1, max::vec2& point2)
 	}
 
 	//if either of the two points are in the view it is true, otherwise false
-	inview = (((viewanglemax > p1angle) && (viewanglemin < p1angle)) || ((viewanglemax > p2angle) && (viewanglemin < p2angle)));
+	inview = (((viewanglemax > p1angle) && (viewanglemin < p1angle)) || ((viewanglemax > p2angle) && (viewanglemin < p2angle))) ||
+		// check if point 1 is on the outside of min and point 2 is outside of max
+		(abs(p1angle - p2angle) >= (max::DegToRad(m_viewAngle) * 2) && false);
+
+
 
 	return inview;
 }

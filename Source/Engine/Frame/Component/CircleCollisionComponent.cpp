@@ -17,4 +17,8 @@ namespace max
 
 		return (distance <= radius);
 	}
+
+	void max::CircleCollisionComponent::Read(const json_t& value) {
+		//
+	}
 }

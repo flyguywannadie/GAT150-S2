@@ -63,7 +63,7 @@ namespace max
 		READ_DATA(value, lifespan);
 
 		if (HAS_DATA(value, transform)) {
-			transform.Read(value);
+			transform.Read(GET_DATA(value, transform));
 		}
 
 		if (HAS_DATA(value, components) && GET_DATA(value, components).IsArray()) {
