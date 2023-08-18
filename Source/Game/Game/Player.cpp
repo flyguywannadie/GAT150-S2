@@ -100,10 +100,10 @@ void Player::Update(float dt)
 void Player::Draw(max::Renderer& renderer) {
 	Actor::Draw(renderer);
 
-	//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
+	renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
 
-	//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).y);
-	//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).y);
+	renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).y);
+	renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).x,(transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).y);
 }
 
 void Player::OnCollision(Actor* other)

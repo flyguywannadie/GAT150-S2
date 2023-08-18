@@ -86,7 +86,7 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 
 		if (player->InView(p11, p21)) {
 
-			//renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
 
 			// Arc length formula
 			// Theta        arc
