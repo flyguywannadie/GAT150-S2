@@ -3,6 +3,7 @@
 		{
 			"type": "Actor",
 			"name": "Background",
+			"persistant": true,
 			"tag": "Epic",
 			"transform": {
 				"position": [ 400, 300 ],
@@ -13,6 +14,40 @@
 				{
 					"type": "SpriteComponent",
 					"textureName": "background1.jpg"
+				}
+			]
+		},
+		{
+			"type": "Enemy",
+			"name": "Enemy",
+			"prototype": true,
+			"transform": {
+				"position": [ 0, 0 ],
+				"scale": 0.5,
+				"rotation": 0
+			},
+			"speed": 100,
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "blue-wooden-chair.png"
+				}
+			]
+		},
+		{
+			"type": "Player",
+			"name": "Player",
+			"prototype": true,
+			"transform": {
+				"position": [ 0, 0 ],
+				"scale": 3,
+				"rotation": 0
+			},
+			"speed": 100,
+			"components": [
+				{
+					"type": "ModelRenderComponent",
+					"modelName": "box.txt"
 				}
 			]
 		}

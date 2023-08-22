@@ -101,38 +101,22 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 			float walldistance2 = p21.Distance(0);
 
 			float viewAngleMax = max::RadToDeg(player->transform.rotation) + player->m_viewAngle;
-			if (viewAngleMax >= 360) {
-				viewAngleMax -= 360;
-			} else if (viewAngleMax < 0) {
-				viewAngleMax += 360;
-			}
+			viewAngleMax = fmod(viewAngleMax, 180);
 			float viewAngleMin = max::RadToDeg(player->transform.rotation) - player->m_viewAngle;
-			if (viewAngleMin >= 360) {
-				viewAngleMin -= 360;
-			} else if (viewAngleMin < 0) {
-				viewAngleMin += 360;
-			}
+			viewAngleMin = fmod(viewAngleMin, 180);
 			
 			float arclengthCameraStartP1 = (viewAngleMax/360.0f) * (walldistance * 2.0f * max::Pi);
 			float arclengthCameraEndP1 = (viewAngleMin/360.0f) * (walldistance * 2.0f * max::Pi);
 			
 			float pangle = atan2(p11.y, p11.x);
-			if (pangle >= max::TwoPi) {
-				pangle -= max::TwoPi;
-			} else if (pangle < 0) {
-				pangle += max::TwoPi;
-			}
+			pangle = fmod(pangle, max::Pi);
 			float arclengthPoint1 = (pangle/max::TwoPi) * (walldistance * 2.0f * max::Pi);
 
 			float arclengthCameraStartP2 = ((player->transform.rotation + max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
 			float arclengthCameraEndP2 = ((player->transform.rotation - max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
 
 			pangle = atan2(p21.y, p21.x);
-			if (pangle >= max::TwoPi) {
-				pangle -= max::TwoPi;
-			}else if (pangle < 0) {
-				pangle += max::TwoPi;
-			}
+			pangle = fmod(pangle, max::Pi);
 			float arclengthPoint2 = (pangle / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
 
 			p1.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint1 - arclengthCameraStartP1) / (arclengthCameraEndP1 - arclengthCameraStartP1)));
@@ -143,20 +127,19 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 
 			float windowheight = renderer.GetHeight();
 			float wallheight = 15.0f;
-			float playerviewangle = tanf(player->m_viewAngle);
 			float viewheightp1 = (tanf(player->m_viewAngle) * (walldistance));
 			float viewheightp2 = (tanf(player->m_viewAngle) * (walldistance2));
 
 			p1.y = (windowheight / 2) - ((wallheight / abs(viewheightp1)) * (windowheight / 2));
 			p2.y = (windowheight / 2) - ((wallheight / abs(viewheightp2)) * (windowheight / 2));
 
-			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+			//renderer.DrawLine(p1.x, p1.y, p2.x, p2.y); // top line
 
 			float bottomp1y = ((windowheight) - p1.y);
 			float bottomp2y = ((windowheight) - p2.y);
 
-			renderer.DrawLine(p1.x, bottomp1y, p2.x, bottomp2y);
-			renderer.DrawLine(p2.x, p2.y, p2.x, bottomp2y);
+			//renderer.DrawLine(p1.x, bottomp1y, p2.x, bottomp2y); // bottom line
+			//renderer.DrawLine(p2.x, p2.y, p2.x, bottomp2y); // vertical line
 		}
 	}
 }

@@ -100,6 +100,7 @@ namespace max
 		dest.w = (int)size.x;
 		dest.h = (int)size.y;
 		// https://wiki.libsdl.org/SDL2/SDL_RenderCopyEx
+
 		SDL_RenderCopyEx(m_renderer, texture->m_texture, NULL, &dest, max::RadToDeg(mx.GetRotation()), NULL, SDL_FLIP_NONE);
 	}
 }

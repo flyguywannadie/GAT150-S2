@@ -60,6 +60,8 @@ void Squisher::Update(float dt)
 	case Squisher::eState::Title:
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
 			m_state = eState::TrackSelect;
+			m_scene->GetActorByName("Background")->active = false;
+			std::cout << m_scene->GetActorByName("Background")->active << std::endl;
 		}
 		break;
 	case Squisher::eState::TrackSelect:
@@ -75,20 +77,24 @@ void Squisher::Update(float dt)
 		INFO_LOG("START LEVEL");
 		m_scene->RemoveAll();
 		{
-			// create player
-			std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {313.289f,125.338f}, 1.11f, 1 });
-			player->tag = "Player";
-			player->m_game = this;
-
-			auto component = CREATE_CLASS(ModelRenderComponent);
-			component->m_model = GET_RESOURCE(max::Model, "box.txt", max::g_renderer);
-			player->AddComponent(std::move(component));
-
-			auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
-			collisionComponent->m_radius = 30.0f;
-			player->AddComponent(std::move(collisionComponent));
-
+			auto player = INSTANTIATE(Player, "Player");
+			player->transform.position = { 400, 300 };
 			m_scene->Add(std::move(player));
+
+			// create player
+			//std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {384.779f,162.773f}, 3.34f, 1 });
+			//player->tag = "Player";
+			//player->m_game = this;
+
+			//auto component = CREATE_CLASS(ModelRenderComponent);
+			//component->m_model = GET_RESOURCE(max::Model, "box.txt", max::g_renderer);
+			//player->AddComponent(std::move(component));
+
+			//auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
+			//collisionComponent->m_radius = 30.0f;
+			//player->AddComponent(std::move(collisionComponent));
+
+			//m_scene->Add(std::move(player));
 
 			// create components
 			//std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
@@ -99,7 +105,7 @@ void Squisher::Update(float dt)
 			walls->tag = "Walls";
 			walls->m_game = this;
 
-			component = CREATE_CLASS(ModelRenderComponent);
+			auto component = CREATE_CLASS(ModelRenderComponent);
 			component->m_model = GET_RESOURCE(max::Model, "Walls.txt", max::g_renderer);
 			walls->AddComponent(std::move(component));
 
@@ -156,6 +162,10 @@ void Squisher::Update(float dt)
 
 void Squisher::Draw(max::Renderer& renderer)
 {
+	m_scene->Draw(renderer);
+
+	max::g_particleSystem.Draw(renderer);
+
 	if (m_state == eState::Title) {
 		m_titleText->Draw(max::g_renderer, 100, 300);
 	}
@@ -168,7 +178,4 @@ void Squisher::Draw(max::Renderer& renderer)
 	if (m_state == eState::TrackSelect) {
 		m_stageSelectText->Draw(max::g_renderer, 100, 100);
 	}
-
-	max::g_particleSystem.Draw(renderer);
-	m_scene->Draw(renderer);
 }

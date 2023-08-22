@@ -1,7 +1,11 @@
-INFO: Factory.h(51) Class Registered: SpriteComponent
-INFO: Factory.h(51) Class Registered: ModelRenderComponent
-INFO: Factory.h(51) Class Registered: EnginePhysicsComponent
-INFO: Factory.h(51) Class Registered: CircleCollisionComponent
-INFO: Factory.h(51) Class Registered: Actor
-INFO: Main.cpp(24) Initialize Engine
-INFO: Squisher.cpp(75) START LEVEL
+INFO: Factory.h(67) Class Registered: Enemy
+INFO: Factory.h(67) Class Registered: Player
+INFO: Factory.h(67) Class Registered: SpriteComponent
+INFO: Factory.h(67) Class Registered: ModelRenderComponent
+INFO: Factory.h(67) Class Registered: EnginePhysicsComponent
+INFO: Factory.h(67) Class Registered: CircleCollisionComponent
+INFO: Factory.h(67) Class Registered: Actor
+INFO: Main.cpp(25) Initialize Engine
+INFO: Factory.h(75) Prototype Class Registered: Enemy
+INFO: Factory.h(75) Prototype Class Registered: Player
+INFO: Squisher.cpp(77) START LEVEL

@@ -9,6 +9,8 @@ namespace max
 {
 	class Enemy : public max::Actor {
 	public:
+		CLASS_DECLERATION(Enemy)
+
 		//Enemy(float speed, int health, const max::Transform& transform) :
 		//	max::Actor{ transform},
 		//	m_speed{ speed },

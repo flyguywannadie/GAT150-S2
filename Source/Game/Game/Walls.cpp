@@ -2,11 +2,15 @@
 
 bool Walls::Initialize()
 {
+	Actor::Initialize();
+
 	return false;
 }
 
 void Walls::Update(float dt)
 {
+	Actor::Update(dt);
+
 	//Component::Update(dt);
 
 	//max::Vector2 direction = transform.position;

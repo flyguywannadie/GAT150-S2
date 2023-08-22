@@ -17,11 +17,11 @@ namespace max
 	{
 		auto iter = m_actors.begin();
 		while (iter != m_actors.end()) {
-			(*iter)->Update(dt);
+			if ((*iter)->active) {
+				(*iter)->Update(dt);
+			}
 			((*iter)->destroyed) ? iter = m_actors.erase(iter) : iter++;
 		}
-
-
 
 		// check collisions
 		for (auto iter1 = m_actors.begin(); iter1 != m_actors.end(); iter1++) {
@@ -45,7 +45,9 @@ namespace max
 	void Scene::Draw(Renderer& renderer)
 	{
 		for (auto& actor : m_actors) {
-			actor->Draw(renderer);
+			if (actor->active) {
+				actor->Draw(renderer);
+			}
 		}
 	}
 
@@ -55,9 +57,12 @@ namespace max
 		m_actors.push_back(std::move(actor));
 	}
 
-	void Scene::RemoveAll()
+	void Scene::RemoveAll(bool force)
 	{
-		m_actors.clear();
+		auto iter = m_actors.begin();
+		while (iter != m_actors.end()) {
+			(force || !(*iter)->persistant) ? iter = m_actors.erase(iter) : iter++;
+		}
 	}
 
 	bool Scene::Load(const std::string& filename)
@@ -83,7 +88,14 @@ namespace max
 
 				auto actor = CREATE_CLASS_BASE(Actor, type);
 				actor->Read(actorValue);
-				Add(std::move(actor));
+
+				if (actor->prototype) {
+					std::string name = actor->name;
+					Factory::Instance().RegisterPrototype(name, std::move(actor));
+				}
+				else {
+					Add(std::move(actor));
+				}
 			}
 		}
 	}

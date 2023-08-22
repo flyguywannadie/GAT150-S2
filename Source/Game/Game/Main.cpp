@@ -8,6 +8,7 @@
 
 #include "Frame/framework.h"
 #include "Frame/Resource/ResourceManager.h"
+#include "Physics/PhysicsSystem.h"
 
 #include "Squisher.h"
 
@@ -33,6 +34,8 @@ int main(int argc, char* argv[])
 	max::g_inputSystem.Initialize();
 
 	max::g_audioSystem.Initialize();
+
+	max::PhysicsSystem::Instance().Initialize();
 
 	// Create Game
 	Squisher::Instance().Initialize();

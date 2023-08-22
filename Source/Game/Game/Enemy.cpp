@@ -4,14 +4,18 @@
 
 namespace max
 {
+	CLASS_DEFINITION(Enemy);
+
 	bool Enemy::Initialize()
 	{
+		Actor::Initialize();
+
 		return false;
 	}
 
 	void Enemy::Update(float dt)
 	{
-		//Component::Update(dt);
+		Actor::Update(dt);
 
 		max::Vector2 direction = transform.position;
 		transform.rotation = direction.Angle() - 90.0f;
@@ -51,5 +55,11 @@ namespace max
 			emitter->lifespan = 1.0f;
 			m_scene->Add(std::move(emitter));
 		}
+	}
+	void Enemy::Read(const json_t& value)
+	{
+		Actor::Read(value);
+
+		READ_DATA(value, speed);
 	}
 }

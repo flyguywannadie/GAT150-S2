@@ -15,6 +15,7 @@ namespace max
 		Actor() = default;
 		Actor(const max::Transform& transform) : transform{ transform } {};
 		//virtual ~Actor() {}
+		Actor(const Actor& other);
 
 		virtual bool Initialize() override;
 		virtual void OnDestroy() override;
@@ -42,6 +43,8 @@ namespace max
 		std::string tag;
 		float lifespan = -1.0f;
 		bool destroyed = false;
+		bool persistant = false;
+		bool prototype = false;
 
 	protected:
 		std::vector<std::unique_ptr<Component>> components;
