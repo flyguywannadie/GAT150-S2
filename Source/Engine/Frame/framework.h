@@ -19,3 +19,4 @@
 #include "Resource/ResourceManager.h"
 
 #include "Factory.h"
+#include "Event/EventManager.h"

@@ -1,9 +1,10 @@
 #pragma once
 #include "Frame/Game.h"
 #include "Frame/Singleton.h"
+#include "Frame/Event/EventManager.h"
 #include "Renderer/Text.h"
 
-class Squisher : public max::Game, public max::Singleton<Squisher>
+class Squisher : public max::Game, max::IEventListener, public max::Singleton<Squisher>
 {
 public:
 	enum class eState
@@ -22,6 +23,9 @@ public:
 	void SetState(eState state) { m_state = state; }
 
 	auto& GetScene() { return m_scene; }
+
+	void AddPoints(const max::Event& event);
+	void OnPlayerDead(const max::Event& event);
 
 	int m_fuel = 100;
 

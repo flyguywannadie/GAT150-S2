@@ -45,6 +45,13 @@ bool Squisher::Initialize()
 	//	scene.Add(move(enemy));
 	//}
 
+
+	// add Events
+	EVENT_SUBSCRIBE("AddPoints", Squisher::AddPoints);
+	EVENT_SUBSCRIBE("PlayerDead", Squisher::OnPlayerDead);
+	//max::EventManager::Instance().Subscribe("AddPoints", this, std::bind(&Squisher::AddPoints, this, std::placeholders::_1));
+	//max::EventManager::Instance().Subscribe("PlayerDead", this, std::bind(&Squisher::OnPlayerDead, this, std::placeholders::_1));
+
 	return true;
 }
 
@@ -61,7 +68,7 @@ void Squisher::Update(float dt)
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
 			m_state = eState::TrackSelect;
 			m_scene->GetActorByName("Background")->active = false;
-			std::cout << m_scene->GetActorByName("Background")->active << std::endl;
+			m_scene->GetActorByName("Title")->active = false;
 		}
 		break;
 	case Squisher::eState::TrackSelect:
@@ -167,7 +174,7 @@ void Squisher::Draw(max::Renderer& renderer)
 	max::g_particleSystem.Draw(renderer);
 
 	if (m_state == eState::Title) {
-		m_titleText->Draw(max::g_renderer, 100, 300);
+		//m_titleText->Draw(max::g_renderer, 100, 300);
 	}
 	if (m_state == eState::Game || m_state == eState::EndWave) {
 		m_healthText->Draw(max::g_renderer, 200, 500);
@@ -178,4 +185,14 @@ void Squisher::Draw(max::Renderer& renderer)
 	if (m_state == eState::TrackSelect) {
 		m_stageSelectText->Draw(max::g_renderer, 100, 100);
 	}
+}
+
+void Squisher::AddPoints(const max::Event& event)
+{
+	
+}
+
+void Squisher::OnPlayerDead(const max::Event& event)
+{
+	
 }

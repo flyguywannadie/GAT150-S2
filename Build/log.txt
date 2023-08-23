@@ -1,11 +1,13 @@
 INFO: Factory.h(67) Class Registered: Enemy
 INFO: Factory.h(67) Class Registered: Player
+INFO: Factory.h(67) Class Registered: TextRenderComponent
 INFO: Factory.h(67) Class Registered: SpriteComponent
 INFO: Factory.h(67) Class Registered: ModelRenderComponent
 INFO: Factory.h(67) Class Registered: EnginePhysicsComponent
 INFO: Factory.h(67) Class Registered: CircleCollisionComponent
 INFO: Factory.h(67) Class Registered: Actor
-INFO: Main.cpp(25) Initialize Engine
+INFO: Main.cpp(82) Initialize Engine
 INFO: Factory.h(75) Prototype Class Registered: Enemy
 INFO: Factory.h(75) Prototype Class Registered: Player
-INFO: Squisher.cpp(77) START LEVEL
+INFO: EventManager.cpp(18) Event subscribed: AddPoints
+INFO: EventManager.cpp(18) Event subscribed: PlayerDead

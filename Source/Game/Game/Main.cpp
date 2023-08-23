@@ -16,12 +16,69 @@
 #include <thread>
 #include <memory>
 #include <array>
+#include <functional>
 
 using namespace std;
 using vec2 = max::Vector2;
 
+void print(int i) {
+	cout << i << endl;
+}
+
+int add(int i1, int i2) {
+	return i1 + i2;
+}
+
+int sub(int i1, int i2) {
+	return i1 - i2;
+}
+
+class A
+{
+public:
+	int add(int i1, int i2) {
+		return i1 + i2;
+	}
+};
+
+union Data
+{
+	int i;
+	bool b;
+	char c[6];
+};
+
 int main(int argc, char* argv[])
 {
+	Data data;
+	data.b = true;
+
+	cout << data.b << endl;
+
+	void (*func_ptr)(int) = &print;
+
+	func_ptr(5);
+
+	int (*op_ptr)(int, int);
+
+	op_ptr = &add;
+	func_ptr(op_ptr(3, 4));
+
+	op_ptr = &sub;
+	func_ptr(op_ptr(3, 4));
+
+	std::function<int(int, int)> op;
+	op = add;
+	cout << op(5, 6) << endl;
+
+	A a;
+	op = std::bind(&A::add, &a, std::placeholders::_1, std::placeholders::_2);
+	func_ptr(op(6,6));
+
+
+
+
+
 	INFO_LOG ("Initialize Engine");
 
 	max::MemoryTracker::Initialize();

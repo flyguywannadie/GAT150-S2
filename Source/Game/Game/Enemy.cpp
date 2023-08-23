@@ -34,6 +34,8 @@ namespace max
 		}
 
 		if (m_health <= 0 && !destroyed) {
+			max::EventManager::Instance().DispatchEvent("AddPoints", 100);
+			
 			destroyed = true;
 
 			max::g_audioSystem.PlayOneShot("hit", false);

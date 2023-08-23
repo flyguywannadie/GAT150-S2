@@ -116,6 +116,8 @@ namespace max {
 			m_health--;
 			if (m_health <= 0) {
 				destroyed = true;
+
+				max::EventManager::Instance().DispatchEvent("OnPlayerDead", 0);
 			}
 		}
 	}
@@ -143,9 +145,9 @@ namespace max {
 		float viewanglemin = (transform.rotation - max::DegToRad(m_viewAngle));
 
 		float p1angle = atan2(point1.y, point1.x);
-		p1angle = fmod(p1angle, max::Pi);
+		p1angle = fmod(p1angle, max::TwoPi);
 		float p2angle = atan2(point2.y, point2.x);
-		p2angle = fmod(p2angle, max::Pi);
+		p2angle = fmod(p2angle, max::TwoPi);
 
 		//std::cout << "" << std::endl;
 
@@ -154,6 +156,12 @@ namespace max {
 			// check if point 1 is on the outside of min and point 2 is outside of max
 			((abs(p1angle - p2angle) >= (max::DegToRad(m_viewAngle) * 2)) && false);
 
+
+		if (inview) {
+			//std::cout << "Cam angle: " << viewanglemin << " - " << viewanglemax << std::endl;
+
+			//std::cout << "line angle: " << p1angle << " - " << p2angle << std::endl;
+		}
 
 
 		return inview;

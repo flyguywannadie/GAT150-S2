@@ -32,6 +32,9 @@ namespace max {
 				renderer.DrawTexture(m_texture.get(), m_owner->transform);
 			}
 		}
+		else {
+			renderer.DrawTexture(m_texture.get(), m_owner->transform);
+		}
 	}
 
 	void SpriteComponent::Read(const json_t& value) {

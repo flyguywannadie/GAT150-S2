@@ -88,6 +88,8 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 
 			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
 
+			std::cout << i << std::endl;
+
 			// Arc length formula
 			// Theta        arc
 			//  360  = circumference
@@ -104,6 +106,8 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 			viewAngleMax = fmod(viewAngleMax, 180);
 			float viewAngleMin = max::RadToDeg(player->transform.rotation) - player->m_viewAngle;
 			viewAngleMin = fmod(viewAngleMin, 180);
+
+			//std::cout << "Cam angle: " << viewAngleMin << " - " << viewAngleMax << std::endl;
 			
 			float arclengthCameraStartP1 = (viewAngleMax/360.0f) * (walldistance * 2.0f * max::Pi);
 			float arclengthCameraEndP1 = (viewAngleMin/360.0f) * (walldistance * 2.0f * max::Pi);
@@ -112,12 +116,16 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 			pangle = fmod(pangle, max::Pi);
 			float arclengthPoint1 = (pangle/max::TwoPi) * (walldistance * 2.0f * max::Pi);
 
+			//std::cout << "line angle 1: " << pangle << std::endl;
+
 			float arclengthCameraStartP2 = ((player->transform.rotation + max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
 			float arclengthCameraEndP2 = ((player->transform.rotation - max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
 
 			pangle = atan2(p21.y, p21.x);
 			pangle = fmod(pangle, max::Pi);
 			float arclengthPoint2 = (pangle / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
+
+			//std::cout << "line angle 2: " << pangle << std::endl;
 
 			p1.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint1 - arclengthCameraStartP1) / (arclengthCameraEndP1 - arclengthCameraStartP1)));
 			p2.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint2 - arclengthCameraStartP2) / (arclengthCameraEndP2 - arclengthCameraStartP2)));
