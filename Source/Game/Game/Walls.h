@@ -1,17 +1,23 @@
 #pragma once
 #include "Frame/Actor.h"
 
-class Walls : public max::Actor {
-public:
-	Walls(const max::Transform& transform) :
-		max::Actor{ transform}
-	{};
+namespace max
+{
 
-	bool Initialize() override;
-	void Update(float dt) override;
-	void OnCollision(Actor* other);
+	class Walls : public max::Actor {
+	public:
+		CLASS_DECLERATION(Walls);
 
-	//void Read(const json_t& value);
+		/*	Walls(const max::Transform& transform) :
+			max::Actor{ transform }
+		{};*/
 
-protected:
-};
+		bool Initialize() override;
+		void Update(float dt) override;
+		void OnCollisionEnter(Actor* other);
+
+		//void Read(const json_t& value);
+
+	protected:
+	};
+}

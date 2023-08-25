@@ -20,7 +20,7 @@ namespace max
 		bool Initialize() override;
 
 		void Update(float dt) override;
-		void OnCollision(Actor* other) override;
+		void OnCollisionEnter(Actor* other) override;
 		void Draw(max::Renderer& renderer) override;
 
 		bool InView(max::vec2& point);

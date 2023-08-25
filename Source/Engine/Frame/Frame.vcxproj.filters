@@ -46,6 +46,12 @@
     <ClCompile Include="Component\TextRenderComponent.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
+    <ClCompile Include="Component\Box2DPhysicsComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\BoxCollisionComponent.cpp">
+      <Filter>Source Files\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -109,6 +115,12 @@
       <Filter>Source Files\Event</Filter>
     </ClInclude>
     <ClInclude Include="Component\TextRenderComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Box2DPhysicsComponent.h">
+      <Filter>Source Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\BoxCollisionComponent.h">
       <Filter>Source Files\Component</Filter>
     </ClInclude>
   </ItemGroup>

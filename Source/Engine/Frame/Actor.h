@@ -27,10 +27,8 @@ namespace max
 		template<typename T>
 		T* GetComponent();
 
-		float GetRadius() {
-			return 30.0f;//(m_model) ? m_model->GetRadius() * m_transform.scale : (m_tag != "") ? 0 : -10000;
-		}
-		virtual void OnCollision(Actor* other) {}
+		virtual void OnCollisionEnter(Actor* other) {}
+		virtual void OnCollisionExit(Actor* other) {}
 
 		friend class Squisher;
 		friend class Scene;

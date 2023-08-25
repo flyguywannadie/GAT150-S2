@@ -4,6 +4,7 @@
 #include "Audio/AudioSystem.h"
 #include "Squisher.h"
 #include "Frame/Scene.h"
+#include "Frame/Component/PhysicsComponent.h"
 
 namespace max
 {
@@ -19,7 +20,8 @@ namespace max
 
 		bool Initialize() override;
 		void Update(float dt) override;
-		void OnCollision(Actor* other);
+
+		void OnCollisionEnter(Actor* other);
 
 		//void Read(const json_t& value);
 
@@ -27,5 +29,7 @@ namespace max
 		float speed = 0;
 		int m_health = 0;
 		int m_damage = 0;
+
+		max::PhysicsComponent* m_physicsComponent = nullptr;
 	};
 }

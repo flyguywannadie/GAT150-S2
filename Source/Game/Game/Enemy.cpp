@@ -10,6 +10,8 @@ namespace max
 	{
 		Actor::Initialize();
 
+		m_physicsComponent = GetComponent<max::PhysicsComponent>();
+
 		return false;
 	}
 
@@ -20,14 +22,18 @@ namespace max
 		max::Vector2 direction = transform.position;
 		transform.rotation = direction.Angle() - 90.0f;
 
+
+
 		max::vec2 forward = max::vec2{ 0,1 }.Rotate(transform.rotation);
-		transform.position += (forward * speed) * max::g_time.GetDeltaTime();
-		transform.position.x = max::Wrap(transform.position.x, (float)max::g_renderer.GetWidth());
-		transform.position.y = max::Wrap(transform.position.y, (float)max::g_renderer.GetHeight());
+		//transform.position += (forward * speed) * max::g_time.GetDeltaTime();
+		//transform.position.x = max::Wrap(transform.position.x, (float)max::g_renderer.GetWidth());
+		//transform.position.y = max::Wrap(transform.position.y, (float)max::g_renderer.GetHeight());
+
+		m_physicsComponent->SetVelocity(forward * speed);
 
 	}
 
-	void Enemy::OnCollision(Actor* other)
+	void Enemy::OnCollisionEnter(Actor* other)
 	{
 		if (other->tag == "Stomping") {
 			m_health = 0;

@@ -20,11 +20,7 @@ namespace max {
 		auto collisionComponent = GetComponent<max::CollisionComponent>();
 
 		if (collisionComponent) {
-			auto renderComponent = GetComponent<max::RenderComponent>();
-			if (renderComponent) {
-				float scale = transform.scale;
-				collisionComponent->m_radius = renderComponent->GetRadius() * scale;
-			}
+
 		}
 
 		return true;
@@ -34,19 +30,23 @@ namespace max {
 	{
 		Actor::Update(dt);
 
-		transform.rotation = fmod(transform.rotation, max::TwoPi);
+		transform.rotation = std::abs(fmod(transform.rotation, max::TwoPi));
 
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) {
-			transform.rotation -= max::DegToRad(1);
+			//transform.rotation -= max::DegToRad(1);
+			m_physicsComponent->ApplyTorque(-1 * max::g_time.GetDeltaTime());
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) {
-			transform.rotation += max::DegToRad(1);
+			//transform.rotation += max::DegToRad(1);
+			m_physicsComponent->ApplyTorque(1 * max::g_time.GetDeltaTime());
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) {
-			transform.position += max::vec2{ 1,0 }.Rotate(transform.rotation);
+			//transform.position += max::vec2{ 1,0 }.Rotate(transform.rotation);
+			m_physicsComponent->ApplyForce(max::vec2{ 1,0 }.Rotate(transform.rotation));
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_S)) {
-			transform.position += max::vec2{ -1,0 }.Rotate(transform.rotation);
+			//transform.position += max::vec2{ -1,0 }.Rotate(transform.rotation);
+			m_physicsComponent->ApplyForce(max::vec2{ -1,0 }.Rotate(transform.rotation));
 		}
 
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_K)) {
@@ -110,7 +110,7 @@ namespace max {
 		renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).y);
 	}
 
-	void Player::OnCollision(Actor* other)
+	void Player::OnCollisionEnter(Actor* other)
 	{
 		if (other->tag == "Enemy_Bullet" && tag == "Player") {
 			m_health--;
@@ -127,12 +127,16 @@ namespace max {
 		bool inview = false;
 
 		float viewanglemax = (transform.rotation + max::DegToRad(m_viewAngle));
+		viewanglemax = fmod(viewanglemax, max::Pi);
 		float viewanglemin = (transform.rotation - max::DegToRad(m_viewAngle));
+		viewanglemin = fmod(viewanglemin, max::Pi);
 
 		float p1angle = atan2(point.y, point.x);
-		p1angle = fmod(p1angle, max::TwoPi);
+		p1angle = fmod(p1angle, max::Pi);
 
 		inview = (((viewanglemax > p1angle) && (viewanglemin < p1angle)));
+
+		std::cout << viewanglemax << " to " << viewanglemin << "\r\n" << p1angle << std::endl;
 
 		return inview;
 	}
@@ -155,13 +159,6 @@ namespace max {
 		inview = (((viewanglemax > p1angle) && (viewanglemin < p1angle)) || ((viewanglemax > p2angle) && (viewanglemin < p2angle))) ||
 			// check if point 1 is on the outside of min and point 2 is outside of max
 			((abs(p1angle - p2angle) >= (max::DegToRad(m_viewAngle) * 2)) && false);
-
-
-		if (inview) {
-			//std::cout << "Cam angle: " << viewanglemin << " - " << viewanglemax << std::endl;
-
-			//std::cout << "line angle: " << p1angle << " - " << p2angle << std::endl;
-		}
 
 
 		return inview;

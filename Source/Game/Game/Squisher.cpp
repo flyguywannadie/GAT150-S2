@@ -85,7 +85,6 @@ void Squisher::Update(float dt)
 		m_scene->RemoveAll();
 		{
 			auto player = INSTANTIATE(Player, "Player");
-			player->transform.position = { 400, 300 };
 			m_scene->Add(std::move(player));
 
 			// create player
@@ -108,14 +107,19 @@ void Squisher::Update(float dt)
 			//component->m_texture = max::g_resourceManager.Get<max::Texture>("blue-wooden-chair.png", max::g_renderer);
 			//player->AddComponent(std::move(component));
 
-			std::unique_ptr<Walls> walls = std::make_unique<Walls>(max::Transform{ {400, 300},0,30 });
-			walls->tag = "Walls";
-			walls->m_game = this;
+			//std::unique_ptr<Walls> walls = std::make_unique<Walls>(max::Transform{ {400, 300},0,30 });
+			//walls->tag = "Walls";
+			//walls->m_game = this;
 
-			auto component = CREATE_CLASS(ModelRenderComponent);
-			component->m_model = GET_RESOURCE(max::Model, "Walls.txt", max::g_renderer);
-			walls->AddComponent(std::move(component));
+			//auto component = CREATE_CLASS(ModelRenderComponent);
+			//component->m_model = GET_RESOURCE(max::Model, "Walls.txt", max::g_renderer);
+			//walls->AddComponent(std::move(component));
 
+			//m_scene->Add(std::move(walls));
+
+			auto walls = INSTANTIATE(Walls, "Walls");
+			walls->transform.position = { 400, 300 };
+			walls->transform.scale = 30;
 			m_scene->Add(std::move(walls));
 		}
 		m_state = eState::StartWave;

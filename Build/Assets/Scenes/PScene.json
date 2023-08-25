@@ -1,0 +1,39 @@
+{
+	"actors": [
+		{
+			"type": "Actor",
+			"name": "Background",
+			"persistant": true,
+			"tag": "Epic",
+			"transform": {
+				"position": [ 400, 300 ],
+				"scale": 1.0,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "SpriteComponent",
+					"textureName": "textures/background.png"
+				}
+			]
+		},
+		{
+			"type": "Actor",
+			"name": "Title",
+			"persistent": true,
+			"transform": {
+				"position": [ 100, 300 ],
+				"scale": 2,
+				"rotation": 0
+			},
+			"components": [
+				{
+					"type": "TextRenderComponent",
+					"fontName": "RaceStripeDemoRegular.ttf",
+					"fontSize": 50,
+					"text": "BLASTER"
+				}
+			]
+		}
+	]
+}

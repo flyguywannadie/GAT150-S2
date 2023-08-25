@@ -16,6 +16,11 @@ namespace max
 		m_velocity += force;
 	}
 
+	void EnginePhysicsComponent::ApplyTorque(float torque)
+	{
+		//
+	}
+
 	void max::EnginePhysicsComponent::Read(const json_t& value) {
 		//
 	}

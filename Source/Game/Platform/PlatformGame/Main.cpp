@@ -2,15 +2,13 @@
 #include "Core/Core.h" 
 #include "Renderer/Renderer.h"
 #include "Input/InputSystem.h"
-#include "Player.h"
-#include "Enemy.h"
 #include "Audio/AudioSystem.h"
 
 #include "Frame/framework.h"
 #include "Frame/Resource/ResourceManager.h"
 #include "Physics/PhysicsSystem.h"
 
-#include "Squisher.h"
+#include "Blaster.h"
 
 #include <vector>
 #include <thread>
@@ -25,7 +23,7 @@ int main(int argc, char* argv[])
 {
 
 
-	INFO_LOG ("Initialize Engine");
+	INFO_LOG("Initialize Engine");
 
 	max::MemoryTracker::Initialize();
 	max::seedRandom((unsigned int)time(nullptr));
@@ -41,7 +39,8 @@ int main(int argc, char* argv[])
 	max::PhysicsSystem::Instance().Initialize();
 
 	// Create Game
-	Squisher::Instance().Initialize();
+	Blaster::Instance().Initialize();
+
 
 	bool quit = false;
 	while (!quit) {
@@ -59,20 +58,20 @@ int main(int argc, char* argv[])
 		max::PhysicsSystem::Instance().Update(max::g_time.GetDeltaTime());
 
 		// update game
-		Squisher::Instance().Update(max::g_time.GetDeltaTime());
+		Blaster::Instance().Update(max::g_time.GetDeltaTime());
 
 		// draw game
 		max::g_renderer.SetColor((uint8_t)0.5f, 1, (uint8_t)0.5f, 0);
 		max::g_renderer.BeginFrame();
 
 		// draw stuff
-		Squisher::Instance().Draw(max::g_renderer);
+		Blaster::Instance().Draw(max::g_renderer);
 
 		//max::g_renderer.DrawTexture(texture.get(), 0.0f, 0.0f, 0.0f);
 
 		max::g_renderer.EndFrame();
 	}
-	Squisher::Instance().Shutdown();
+	Blaster::Instance().Shutdown();
 	max::MemoryTracker::DisplayInfo();
 
 

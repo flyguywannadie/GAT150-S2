@@ -69,6 +69,7 @@ namespace max
 	void Actor::AddComponent(std::unique_ptr<Component> component)
 	{
 		component->m_owner = this;
+		//component->Initialize();
 		components.push_back(std::move(component));
 	}
 
@@ -92,6 +93,7 @@ namespace max
 
 				auto component = CREATE_CLASS_BASE(Component, type);
 				component->Read(componentValue);
+				component->m_owner = this;
 
 				component->Initialize();
 				AddComponent(std::move(component));
