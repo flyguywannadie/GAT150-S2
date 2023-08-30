@@ -13,6 +13,9 @@ namespace max
 		Color() : r{ 0 }, g{ 0 }, b{ 0 }, a{ 1 } {};
 		Color(float r, float g, float b, float a = 1) : r{ r }, g{ g }, b{ b }, a{ a } {};
 
+		float operator [] (size_t index) const { return (&r)[index]; }
+		float& operator [] (size_t index) { return (&r)[index]; }
+
 		static uint8_t ToInt(float c) { return (uint8_t)(Clamp(c, 1.0f, 0.0f) * 255.0f); }
 	};
 

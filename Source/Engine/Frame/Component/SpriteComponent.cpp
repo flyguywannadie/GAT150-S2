@@ -4,6 +4,7 @@
 #include "Frame/Scene.h"
 #include "Game/Player.h"
 #include "Frame/Resource/ResourceManager.h"
+#include "Frame/Component/CameraComponent.h"
 
 namespace max {
 
@@ -13,6 +14,15 @@ namespace max {
 		if (!textureName.empty()) {
  			m_texture = GET_RESOURCE(Texture, textureName, max::g_renderer);
 		}
+		if (source.w == 0 && source.h == 0) {
+			if (m_texture) {
+				source.x = 0;
+				source.y = 0;
+				source.w = (int)m_texture->GetSize().x;
+				source.h = (int)m_texture->GetSize().y;
+			}
+		}
+
 		return true;
 	}
 
@@ -23,22 +33,27 @@ namespace max {
 
 	void max::SpriteComponent::Draw(Renderer& renderer)
 	{
-		//Player* player = Squisher::Instance().GetScene()->GetActor<Player>();
+		if (CameraComponent::Instance().m_owner) {
+			auto* camera = &CameraComponent::Instance();
+			auto* player = camera->m_owner;
 
-		//if (player) {
-		//	max::vec2 p1 = m_owner->transform.position - player->transform.position;
+			max::vec2 p1 = m_owner->transform.position - player->transform.position;
 
-		//	if (player->InView(p1)) {
-		//		renderer.DrawTexture(m_texture.get(), m_owner->transform);
-		//	}
-		//}
-		//else {
-		//	renderer.DrawTexture(m_texture.get(), m_owner->transform);
-		//}
-		renderer.DrawTexture(m_texture.get(), m_owner->transform);
+			if (camera->InView(p1)) {
+				Transform t = m_owner->transform;
+
+
+
+				renderer.DrawTexture(m_texture.get(), t);
+			}
+		}
+		else {
+			renderer.DrawTexture(m_texture.get(), source, m_owner->transform);
+		}
 	}
 
 	void SpriteComponent::Read(const json_t& value) {
 		READ_DATA(value, textureName);
+		READ_DATA(value, source);
 	}
 }

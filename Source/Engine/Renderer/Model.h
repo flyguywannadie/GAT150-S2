@@ -19,7 +19,6 @@ namespace max
 		void Draw(Renderer& renderer, const Transform& transform);
 
 		float GetRadius();
-		std::vector<vec2> GetPoints() const { return m_points; }
 		Color GetColor() const { return m_color; };
 
 		virtual bool Create(std::string filename, ...) override;

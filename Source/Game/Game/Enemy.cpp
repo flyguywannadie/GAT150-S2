@@ -10,6 +10,12 @@ namespace max
 	{
 		Actor::Initialize();
 
+		m_health = 10;
+
+		speed = 0;
+
+		transform.position = vec2{random(g_renderer.GetWidth()),random(g_renderer.GetHeight()) };
+
 		m_physicsComponent = GetComponent<max::PhysicsComponent>();
 
 		return false;
@@ -19,10 +25,11 @@ namespace max
 	{
 		Actor::Update(dt);
 
-		max::Vector2 direction = transform.position;
-		transform.rotation = direction.Angle() - 90.0f;
-
-
+		Player* player = m_scene->GetActor<Player>();
+		if (player) {
+			max::Vector2 direction = player->transform.position - transform.position;
+			transform.rotation = direction.Angle() - 90.0f;
+		}
 
 		max::vec2 forward = max::vec2{ 0,1 }.Rotate(transform.rotation);
 		//transform.position += (forward * speed) * max::g_time.GetDeltaTime();
@@ -67,6 +74,8 @@ namespace max
 	void Enemy::Read(const json_t& value)
 	{
 		Actor::Read(value);
+
+		m_health = 10;
 
 		READ_DATA(value, speed);
 	}

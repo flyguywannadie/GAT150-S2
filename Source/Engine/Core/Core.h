@@ -12,3 +12,4 @@
 #include "Math/Transform.h"
 #include "Math/MathUtils.h"
 #include "Math/Color.h"
+#include "Math/Rect.h"

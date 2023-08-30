@@ -93,9 +93,9 @@ namespace max
 
 				auto component = CREATE_CLASS_BASE(Component, type);
 				component->Read(componentValue);
-				component->m_owner = this;
+				//component->m_owner = this;
 
-				component->Initialize();
+				//if (!prototype) component->Initialize();
 				AddComponent(std::move(component));
 			}
 		}

@@ -14,7 +14,9 @@ namespace max
 
 		Actor() = default;
 		Actor(const max::Transform& transform) : transform{ transform } {};
-		//virtual ~Actor() {}
+		virtual ~Actor() {
+			OnDestroy();
+		}
 		Actor(const Actor& other);
 
 		virtual bool Initialize() override;

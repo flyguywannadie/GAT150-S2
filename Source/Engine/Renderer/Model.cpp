@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "Renderer.h"
 //#include "Game/Squisher.h"
+#include "Frame/Component/CameraComponent.h"
 #include "Frame/Scene.h"
 #include "Game/Player.h"
 #include <sstream>
@@ -79,79 +80,96 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 			//p2 = (mx * m_points[0]);
 		}
 
-//		auto* player = Squisher::Instance().GetScene()->GetActor<Player>();
+		if (CameraComponent::Instance().m_owner) {
+			auto* camera = &CameraComponent::Instance();
+			auto* player = camera->m_owner;
 
-//		vec2 p11 = p1 - player->transform.position;
-//		vec2 p21 = p2 - player->transform.position;
+			vec2 p11 = p1 - player->transform.position;
+			vec2 p21 = p2 - player->transform.position;
 
-		renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+			if (camera->InView(p11, p21)) {
 
-		//std::cout << i << std::endl;
+				renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
 
-	//	if (player->InView(p11, p21)) {
+				// Arc length formula
+				// Theta        arc
+				//  360  = circumference
 
-	//		renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+				// arc = (Theta/360) * Circumference
 
-	//		// Arc length formula
-	//		// Theta        arc
-	//		//  360  = circumference
+				// find the difference in arc length between camera view and point positions
+				// that will be the x position on screen
 
-	//		// arc = (Theta/360) * Circumference
+				float walldistance = p11.Distance(0);
+				float walldistance2 = p21.Distance(0);
 
-	//		// find the difference in arc length between camera view and point positions
-	//		// that will be the x position on screen
+				vec2 forward = max::vec2{ 1,0 }.Rotate(player->transform.rotation);
+				float viewRotation = forward.Angle();
 
-	//		float walldistance = p11.Distance(0);
-	//		float walldistance2 = p21.Distance(0);
+				float viewAngleMax = viewRotation + max::DegToRad(camera->m_viewAngle);
+				float viewAngleMin = viewRotation - max::DegToRad(camera->m_viewAngle);
 
-	//		float viewAngleMax = max::RadToDeg(player->transform.rotation) + player->m_viewAngle;
-	//		viewAngleMax = fmod(viewAngleMax, 180);
-	//		float viewAngleMin = max::RadToDeg(player->transform.rotation) - player->m_viewAngle;
-	//		viewAngleMin = fmod(viewAngleMin, 180);
+				float arclengthCameraStartP1, arclengthCameraEndP1, arclengthCameraStartP2, arclengthCameraEndP2, arclengthPoint1, arclengthPoint2, p1angle, p2angle;
 
-	//		//std::cout << "Cam angle: " << viewAngleMin << " - " << viewAngleMax << std::endl;
-	//		
-	//		float arclengthCameraStartP1 = (viewAngleMax/360.0f) * (walldistance * 2.0f * max::Pi);
-	//		float arclengthCameraEndP1 = (viewAngleMin/360.0f) * (walldistance * 2.0f * max::Pi);
-	//		
-	//		float pangle = atan2(p11.y, p11.x);
-	//		pangle = fmod(pangle, max::Pi);
-	//		float arclengthPoint1 = (pangle/max::TwoPi) * (walldistance * 2.0f * max::Pi);
+				arclengthCameraStartP1 = (viewAngleMax / TwoPi) * (walldistance * 2.0f * max::Pi);
+				arclengthCameraEndP1 = (viewAngleMin / TwoPi) * (walldistance * 2.0f * max::Pi);
 
-	//		//std::cout << "line angle 1: " << pangle << std::endl;
+				arclengthCameraStartP2 = (viewAngleMax / TwoPi) * (walldistance2 * 2.0f * max::Pi);
+				arclengthCameraEndP2 = (viewAngleMin / TwoPi) * (walldistance2 * 2.0f * max::Pi);
 
-	//		float arclengthCameraStartP2 = ((player->transform.rotation + max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
-	//		float arclengthCameraEndP2 = ((player->transform.rotation - max::DegToRad(player->m_viewAngle)) / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
+				p1angle = atan2(p11.y, p11.x);
+				p2angle = atan2(p21.y, p21.x);
 
-	//		pangle = atan2(p21.y, p21.x);
-	//		pangle = fmod(pangle, max::Pi);
-	//		float arclengthPoint2 = (pangle / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
+				if (p2angle < 0 && viewRotation > HalfPi) {
+					p2angle += TwoPi;
+				}
+				if (p2angle > 0 && viewRotation < -HalfPi) {
+					p2angle -= TwoPi;
+				}
+				if (p1angle < 0 && viewRotation > HalfPi) {
+					p1angle += TwoPi;
+				}
+				if (p1angle > 0 && viewRotation < -HalfPi) {
+					p1angle -= TwoPi;
+				}
 
-	//		//std::cout << "line angle 2: " << pangle << std::endl;
+				arclengthPoint1 = (p1angle / max::TwoPi) * (walldistance * 2.0f * max::Pi);
+				arclengthPoint2 = (p2angle / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);
 
-	//		p1.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint1 - arclengthCameraStartP1) / (arclengthCameraEndP1 - arclengthCameraStartP1)));
-	//		p2.x = renderer.GetWidth() - (renderer.GetWidth() * ((arclengthPoint2 - arclengthCameraStartP2) / (arclengthCameraEndP2 - arclengthCameraStartP2)));
+				float p1difference = (arclengthPoint1 - arclengthCameraStartP1);
+				float p1camdifference = (arclengthCameraEndP1 - arclengthCameraStartP1);
+				float p2difference = (arclengthPoint2 - arclengthCameraStartP2);
+				float p2camdifference = (arclengthCameraEndP2 - arclengthCameraStartP2);
 
-	//		// find the distance from the player .
-	//		// some ratio of that would determine how high and low the line is drawn on screen.
+				
+				p1.x = renderer.GetWidth() - (renderer.GetWidth() * (p1difference / p1camdifference));
+				p2.x = renderer.GetWidth() - (renderer.GetWidth() * (p2difference / p2camdifference));
 
-	//		float windowheight = renderer.GetHeight();
-	//		float wallheight = 15.0f;
-	//		float viewheightp1 = (tanf(player->m_viewAngle) * (walldistance));
-	//		float viewheightp2 = (tanf(player->m_viewAngle) * (walldistance2));
+				// find the distance from the player .
+				// some ratio of that would determine how high and low the line is drawn on screen.
 
-	//		p1.y = (windowheight / 2) - ((wallheight / abs(viewheightp1)) * (windowheight / 2));
-	//		p2.y = (windowheight / 2) - ((wallheight / abs(viewheightp2)) * (windowheight / 2));
+				float windowheight = renderer.GetHeight();
+				float wallheight = 15.0f;
+				float viewheightp1 = (tanf(camera->m_viewAngle) * (walldistance));
+				float viewheightp2 = (tanf(camera->m_viewAngle) * (walldistance2));
 
-	//		renderer.DrawLine(p1.x, p1.y, p2.x, p2.y); // top line
+				p1.y = (windowheight / 2) - ((wallheight / abs(viewheightp1)) * (windowheight / 2));
+				p2.y = (windowheight / 2) - ((wallheight / abs(viewheightp2)) * (windowheight / 2));
 
-	//		float bottomp1y = ((windowheight) - p1.y);
-	//		float bottomp2y = ((windowheight) - p2.y);
+				renderer.DrawLine(p1.x, p1.y, p2.x, p2.y); // top line
 
-	//		renderer.DrawLine(p1.x, bottomp1y, p2.x, bottomp2y); // bottom line
-	//		renderer.DrawLine(p2.x, p2.y, p2.x, bottomp2y); // vertical line
-	//	}
+				float bottomp1y = ((windowheight)-p1.y);
+				float bottomp2y = ((windowheight)-p2.y);
+
+				renderer.DrawLine(p1.x, bottomp1y, p2.x, bottomp2y); // bottom line
+				renderer.DrawLine(p2.x, p2.y, p2.x, bottomp2y); // vertical line
+			}
+		}
+		else {
+			renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+		}
 	}
+		
 }
 
 float max::Model::GetRadius()

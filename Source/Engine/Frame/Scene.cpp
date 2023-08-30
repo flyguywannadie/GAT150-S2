@@ -54,7 +54,6 @@ namespace max
 	void Scene::Add(std::unique_ptr<Actor> actor)
 	{
 		actor->m_scene = this;
-		actor->Initialize();
 		m_actors.push_back(std::move(actor));
 	}
 

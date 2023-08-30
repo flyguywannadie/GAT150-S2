@@ -18,6 +18,7 @@ bool Blaster::Initialize()
 	// Load Scene, Player, and Enemies
 	m_scene = std::make_unique<max::Scene>();
 	m_scene->Load("scenes/pscene.json");
+	m_scene->Load("tilemap.json");
 	m_scene->Initialize();
 
 	//for (int i = 0; i < 10; i++) {
@@ -46,11 +47,9 @@ void Blaster::Update(float dt)
 	switch (m_state)
 	{
 	case Blaster::eState::Title:
-		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
-			m_state = eState::TrackSelect;
-			m_scene->GetActorByName("Background")->active = false;
-			m_scene->GetActorByName("Title")->active = false;
-		}
+	{
+		//auto actor = INSTANTIATE(Actor, "Player"); 
+	}
 		break;
 	case Blaster::eState::TrackSelect:
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {

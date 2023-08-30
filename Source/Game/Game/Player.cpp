@@ -4,6 +4,7 @@
 #include "Audio/AudioSystem.h"
 #include "Renderer/Renderer.h"
 #include "Enemy.h"
+#include "Frame/Component/CameraComponent.h"
 
 #include "Frame/framework.h"
 
@@ -16,6 +17,8 @@ namespace max {
 
 		m_physicsComponent = GetComponent<max::PhysicsComponent>();
 		m_modelRenderComponent = GetComponent<max::ModelRenderComponent>();
+
+		CameraComponent::Instance().m_owner = this;
 
 		auto collisionComponent = GetComponent<max::CollisionComponent>();
 
@@ -30,15 +33,15 @@ namespace max {
 	{
 		Actor::Update(dt);
 
-		transform.rotation = std::abs(fmod(transform.rotation, max::TwoPi));
+		//transform.rotation = std::abs(fmod(transform.rotation, max::TwoPi));
 
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) {
 			//transform.rotation -= max::DegToRad(1);
-			m_physicsComponent->ApplyTorque(-1 * max::g_time.GetDeltaTime());
+			m_physicsComponent->ApplyTorque(-1 * g_time.GetDeltaTime());
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) {
 			//transform.rotation += max::DegToRad(1);
-			m_physicsComponent->ApplyTorque(1 * max::g_time.GetDeltaTime());
+			m_physicsComponent->ApplyTorque(1 * g_time.GetDeltaTime());
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) {
 			//transform.position += max::vec2{ 1,0 }.Rotate(transform.rotation);
@@ -52,6 +55,7 @@ namespace max {
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_K)) {
 			auto enemy = INSTANTIATE(Enemy, "Enemy");
 			enemy->transform.position = { 100, 100 };
+			enemy->Initialize();
 			m_scene->Add(std::move(enemy));
 		}
 
@@ -104,10 +108,12 @@ namespace max {
 	void Player::Draw(max::Renderer& renderer) {
 		Actor::Draw(renderer);
 
-		renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
+		if (CameraComponent::Instance().m_owner) {
+			renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
 
-		renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(m_viewAngle))).y);
-		renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(m_viewAngle))).y);
+			renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(CameraComponent::Instance().m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(CameraComponent::Instance().m_viewAngle))).y);
+			renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(CameraComponent::Instance().m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(CameraComponent::Instance().m_viewAngle))).y);
+		}
 	}
 
 	void Player::OnCollisionEnter(Actor* other)
@@ -120,48 +126,6 @@ namespace max {
 				max::EventManager::Instance().DispatchEvent("OnPlayerDead", 0);
 			}
 		}
-	}
-
-	bool Player::InView(max::vec2& point)
-	{
-		bool inview = false;
-
-		float viewanglemax = (transform.rotation + max::DegToRad(m_viewAngle));
-		viewanglemax = fmod(viewanglemax, max::Pi);
-		float viewanglemin = (transform.rotation - max::DegToRad(m_viewAngle));
-		viewanglemin = fmod(viewanglemin, max::Pi);
-
-		float p1angle = atan2(point.y, point.x);
-		p1angle = fmod(p1angle, max::Pi);
-
-		inview = (((viewanglemax > p1angle) && (viewanglemin < p1angle)));
-
-		std::cout << viewanglemax << " to " << viewanglemin << "\r\n" << p1angle << std::endl;
-
-		return inview;
-	}
-
-	bool Player::InView(max::vec2& point1, max::vec2& point2)
-	{
-		bool inview = false;
-
-		float viewanglemax = (transform.rotation + max::DegToRad(m_viewAngle));
-		float viewanglemin = (transform.rotation - max::DegToRad(m_viewAngle));
-
-		float p1angle = atan2(point1.y, point1.x);
-		p1angle = fmod(p1angle, max::TwoPi);
-		float p2angle = atan2(point2.y, point2.x);
-		p2angle = fmod(p2angle, max::TwoPi);
-
-		//std::cout << "" << std::endl;
-
-		//if either of the two points are in the view it is true, otherwise false
-		inview = (((viewanglemax > p1angle) && (viewanglemin < p1angle)) || ((viewanglemax > p2angle) && (viewanglemin < p2angle))) ||
-			// check if point 1 is on the outside of min and point 2 is outside of max
-			((abs(p1angle - p2angle) >= (max::DegToRad(m_viewAngle) * 2)) && false);
-
-
-		return inview;
 	}
 
 	void Player::Read(const json_t& value)

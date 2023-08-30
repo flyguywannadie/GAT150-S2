@@ -36,7 +36,7 @@ bool Squisher::Initialize()
 
 	// Load Scene, Player, and Enemies
 	m_scene = std::make_unique<max::Scene>();
-	m_scene->Load("scene.json");
+	m_scene->Load("scenes/scene.json");
 	m_scene->Initialize();
 
 	//for (int i = 0; i < 10; i++) {
@@ -85,6 +85,7 @@ void Squisher::Update(float dt)
 		m_scene->RemoveAll();
 		{
 			auto player = INSTANTIATE(Player, "Player");
+			player->Initialize();
 			m_scene->Add(std::move(player));
 
 			// create player
@@ -119,7 +120,7 @@ void Squisher::Update(float dt)
 
 			auto walls = INSTANTIATE(Walls, "Walls");
 			walls->transform.position = { 400, 300 };
-			walls->transform.scale = 30;
+			walls->Initialize();
 			m_scene->Add(std::move(walls));
 		}
 		m_state = eState::StartWave;
