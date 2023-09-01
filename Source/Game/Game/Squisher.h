@@ -9,7 +9,7 @@ class Squisher : public max::Game, max::IEventListener, public max::Singleton<Sq
 public:
 	enum class eState
 	{
-		Title, TrackSelect, StartGame, StartLevel, StartWave, Game, EndWave, GameOver
+		Title, Gaming, StartLevel1, StartLevel2, StartLevel3, EndScreen, GameOver
 	};
 
 public:
@@ -27,16 +27,8 @@ public:
 	void AddPoints(const max::Event& event);
 	void OnPlayerDead(const max::Event& event);
 
-	int m_fuel = 100;
-
-	friend class GameTrack;
-	friend class Spawner;
-	friend class Destroyer;
-
 private:
 	eState m_state = eState::Title;
-
-	int m_baseHealth = 10;
 
 	float m_stateTimer = 0;
 
@@ -48,9 +40,5 @@ private:
 	std::shared_ptr<max::Font> m_orangejuicefont;
 	std::shared_ptr<max::Font> m_mondeur;
 
-
-	std::unique_ptr<max::Text> m_titleText;
 	std::unique_ptr<max::Text> m_gameOverText;
-	std::unique_ptr<max::Text> m_stageSelectText;
-	std::unique_ptr<max::Text> m_healthText;
 };

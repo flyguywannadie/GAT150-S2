@@ -12,6 +12,7 @@ namespace max {
 		void Draw(class Renderer& renderer) override;
 
 		virtual float GetRadius() override { return m_model->GetRadius(); }
+		bool IsInside(const vec2& position);
 
 	public:
 		std::string modelName;

@@ -12,6 +12,8 @@
 #include "Renderer/Renderer.h"
 #include "Renderer/Text.h"
 
+#include "Frame/Component/CameraComponent.h"
+
 bool Squisher::Initialize()
 {
 	// Create Font/Text
@@ -20,19 +22,12 @@ bool Squisher::Initialize()
 	m_orangejuicefont = GET_RESOURCE(max::Font, "orange juice 2.0.ttf", 30);
 	m_mondeur = GET_RESOURCE(max::Font, "data-latin.ttf", 30);
 
-	m_titleText = std::make_unique<max::Text>(m_speedracerfont);
-	m_titleText->Create(max::g_renderer, "SQUISHER", max::Color{ 1, 1, 1, 1 });
-
 	m_gameOverText = std::make_unique<max::Text>(m_speedracerfont);
 	m_gameOverText->Create(max::g_renderer, "GAME OVER", max::Color{ 1, 1, 1, 1 });
 
-	m_stageSelectText = std::make_unique<max::Text>(m_mondeur);
-
-	m_healthText = std::make_unique<max::Text>(m_orangejuicefont);
-
 	// Load Audio
-	max::g_audioSystem.AddAudio("hit", "hit.wav");
-	max::g_audioSystem.AddAudio("land", "land.wav");
+	max::g_audioSystem.AddAudio("hit", "squisher/hit.wav");
+	max::g_audioSystem.AddAudio("land", "squisher/land.wav");
 
 	// Load Scene, Player, and Enemies
 	m_scene = std::make_unique<max::Scene>();
@@ -66,21 +61,12 @@ void Squisher::Update(float dt)
 	{
 	case Squisher::eState::Title:
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
-			m_state = eState::TrackSelect;
 			m_scene->GetActorByName("Background")->active = false;
 			m_scene->GetActorByName("Title")->active = false;
+			m_state = eState::StartLevel1;
 		}
 		break;
-	case Squisher::eState::TrackSelect:
-		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
-			m_state = eState::StartGame;
-		}
-		break;
-	case Squisher::eState::StartGame:
-		m_baseHealth = 10;
-		m_state = eState::StartLevel;
-		break;
-	case Squisher::eState::StartLevel:
+	case Squisher::eState::StartLevel1:
 		INFO_LOG("START LEVEL");
 		m_scene->RemoveAll();
 		{
@@ -88,66 +74,19 @@ void Squisher::Update(float dt)
 			player->Initialize();
 			m_scene->Add(std::move(player));
 
-			// create player
-			//std::unique_ptr<Player> player = std::make_unique<Player>(200.0f, max::Pi, max::Transform{ {384.779f,162.773f}, 3.34f, 1 });
-			//player->tag = "Player";
-			//player->m_game = this;
-
-			//auto component = CREATE_CLASS(ModelRenderComponent);
-			//component->m_model = GET_RESOURCE(max::Model, "box.txt", max::g_renderer);
-			//player->AddComponent(std::move(component));
-
-			//auto collisionComponent = CREATE_CLASS(CircleCollisionComponent);
-			//collisionComponent->m_radius = 30.0f;
-			//player->AddComponent(std::move(collisionComponent));
-
-			//m_scene->Add(std::move(player));
-
-			// create components
-			//std::unique_ptr<max::SpriteComponent> component = std::make_unique<max::SpriteComponent>();
-			//component->m_texture = max::g_resourceManager.Get<max::Texture>("blue-wooden-chair.png", max::g_renderer);
-			//player->AddComponent(std::move(component));
-
-			//std::unique_ptr<Walls> walls = std::make_unique<Walls>(max::Transform{ {400, 300},0,30 });
-			//walls->tag = "Walls";
-			//walls->m_game = this;
-
-			//auto component = CREATE_CLASS(ModelRenderComponent);
-			//component->m_model = GET_RESOURCE(max::Model, "Walls.txt", max::g_renderer);
-			//walls->AddComponent(std::move(component));
-
-			//m_scene->Add(std::move(walls));
-
 			auto walls = INSTANTIATE(Walls, "Walls");
 			walls->transform.position = { 400, 300 };
 			walls->Initialize();
 			m_scene->Add(std::move(walls));
 		}
-		m_state = eState::StartWave;
+		m_state = eState::Gaming;
 		break;
-	case Squisher::eState::StartWave:
-		m_state = eState::Game;
-		break;
-	case Squisher::eState::Game:
+	case Squisher::eState::Gaming:
 
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_GRAVE)) {
 			m_state = eState::GameOver;
+			max::CameraComponent::Instance().m_owner = nullptr;
 		}
-
-		if (m_fuel > 100) {
-			m_fuel = 100;
-		}
-		if (m_fuel < 0) {
-			m_fuel = 0;
-		}
-
-		if (m_baseHealth <= 0) {
-			m_state = eState::GameOver;
-			m_stateTimer = 3.0f;
-		}
-
-		break;
-	case Squisher::eState::EndWave:
 
 		break;
 	case Squisher::eState::GameOver:
@@ -158,6 +97,8 @@ void Squisher::Update(float dt)
 		}
 		if (m_stateTimer <= 0) {
 			m_state = eState::Title;
+			m_scene->GetActorByName("Background")->active = true;
+			m_scene->GetActorByName("Title")->active = true;
 		}
 		break;
 	default:
@@ -166,8 +107,6 @@ void Squisher::Update(float dt)
 
 	//"Left and Right Arrows Weapon:" + std::to_string(m_weaponSelect);
 	//m_stageSelectText->Create(max::g_renderer, "A and D Key Stage: " + std::to_string(m_stageSelect), max::Color{1, 1, 1, 1});
-
-	m_healthText->Create(max::g_renderer, "Base Health: " + std::to_string(m_baseHealth), max::Color{1, 1, 1, 1});
 	m_scene->Update(dt);
 }
 
@@ -178,17 +117,8 @@ void Squisher::Draw(max::Renderer& renderer)
 
 	max::g_particleSystem.Draw(renderer);
 
-	if (m_state == eState::Title) {
-		//m_titleText->Draw(max::g_renderer, 100, 300);
-	}
-	if (m_state == eState::Game || m_state == eState::EndWave) {
-		m_healthText->Draw(max::g_renderer, 200, 500);
-	}
 	if (m_state == eState::GameOver) {
 		m_gameOverText->Draw(max::g_renderer, 100, 300);
-	}
-	if (m_state == eState::TrackSelect) {
-		m_stageSelectText->Draw(max::g_renderer, 100, 100);
 	}
 }
 

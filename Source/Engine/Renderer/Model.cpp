@@ -76,8 +76,8 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 			p2 = (mx * m_points[i + 1]);
 		}
 		else {
-			//p1 = (mx * m_points[i]);
-			//p2 = (mx * m_points[0]);
+			p1 = (mx * m_points[i]);
+			p2 = (mx * m_points[0]);
 		}
 
 		if (CameraComponent::Instance().m_owner) {
@@ -89,7 +89,7 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 
 			if (camera->InView(p11, p21)) {
 
-				renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
+				//renderer.DrawLine(p1.x, p1.y, p2.x, p2.y);
 
 				// Arc length formula
 				// Theta        arc
@@ -120,18 +120,36 @@ void max::Model::Draw(Renderer& renderer, const Transform& transform)
 				p1angle = atan2(p11.y, p11.x);
 				p2angle = atan2(p21.y, p21.x);
 
-				if (p2angle < 0 && viewRotation > HalfPi) {
-					p2angle += TwoPi;
+
+				if (viewRotation > HalfPi) {
+					if (p1angle < 0) {
+						p1angle += TwoPi;
+					}
+					if (p2angle < 0) {
+						p2angle += TwoPi;
+					}
 				}
-				if (p2angle > 0 && viewRotation < -HalfPi) {
-					p2angle -= TwoPi;
+				else if (viewRotation < -HalfPi) {
+					if (p1angle > 0) {
+						p1angle -= TwoPi;
+					}
+					if (p2angle > 0) {
+						p2angle -= TwoPi;
+					}
 				}
-				if (p1angle < 0 && viewRotation > HalfPi) {
-					p1angle += TwoPi;
-				}
-				if (p1angle > 0 && viewRotation < -HalfPi) {
-					p1angle -= TwoPi;
-				}
+
+				//if (p2angle < 0 && viewAngleMax > Pi) {
+				//	p2angle += TwoPi;
+				//}
+				//if (p2angle > 0 && viewAngleMin < -Pi) {
+				//	p2angle -= TwoPi;
+				//}
+				//if (p1angle < 0 && viewAngleMax > Pi) {
+				//	p1angle += TwoPi;
+				//}
+				//if (p1angle > 0 && viewAngleMin < -Pi) {
+				//	p1angle -= TwoPi;
+				//}
 
 				arclengthPoint1 = (p1angle / max::TwoPi) * (walldistance * 2.0f * max::Pi);
 				arclengthPoint2 = (p2angle / max::TwoPi) * (walldistance2 * 2.0f * max::Pi);

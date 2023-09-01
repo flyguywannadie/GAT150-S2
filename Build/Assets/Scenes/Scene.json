@@ -23,14 +23,25 @@
 			"prototype": true,
 			"transform": {
 				"position": [ 0, 0 ],
-				"scale": 0.25,
+				"scale": 1,
 				"rotation": 0
 			},
-			"speed": 1,
+			"speed": 0.5,
 			"components": [
 				{
-					"type": "SpriteComponent",
-					"textureName": "Squisher/blue-wooden-chair.png"
+					"type": "SpriteAnimComponent",
+					"defaultSequenceName": "idle",
+					"sequences": [
+						{
+							"name": "idle",
+							"fps": 4,
+							"numColumns": 4,
+							"numRows": 1,
+							"startFrame": 1,
+							"endFrame": 4,
+							"textureName": "Squisher/DoomImp.png"
+						}
+					]
 				},
 				{
 					"type": "Box2DPhysicsComponent",
@@ -83,14 +94,14 @@
 			"components": [
 				{
 					"type": "ModelRenderComponent",
-					"modelName": "Squisher/BigWalls.txt"
+					"modelName": "Squisher/Walls.txt"
 				}
 			]
 		},
 		{
 			"type": "Actor",
 			"name": "Title",
-			"persistent": true,
+			"persistant": true,
 			"transform": {
 				"position": [ 100, 300 ],
 				"scale": 2,

@@ -15,6 +15,12 @@ namespace max
 		return (value % max) + ((value < 0) ? max : 0);
 	}
 
+	inline float Sign(float x) {
+		if (x > 0) return 1;
+		if (x < 0) return -1;
+		return 0;
+	}
+
 	inline float Wrap(float value, float max){
 		return std::fmod(value, max) + ((value < 0) ? max : 0);
 	}

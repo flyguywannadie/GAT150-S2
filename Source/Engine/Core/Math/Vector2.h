@@ -1,6 +1,6 @@
 #pragma once
-#include <cmath>
 #include <sstream>
+#include "Core/Math/MathUtils.h"
 
 namespace max
 {
@@ -46,11 +46,37 @@ namespace max
 
 		float Angle() const { return std::atan2f(y,x); }
 		Vector2 Rotate(float radians) const;
+		bool DoesLineIntersect(const Vector2& a, const Vector2& b, const Vector2& q, const Vector2& r);
 
 		static float SignedAngle(const Vector2& v1, const Vector2& v2);
 		static float Angle(const Vector2& v1, const Vector2& v2);
 		static float Dot(const Vector2& v1, const Vector2& v2);
+
+		
 	};
+
+	inline bool DoesLineIntersect(const Vector2& a, const Vector2& b, const Vector2& q, const Vector2& r) {
+		//https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection#Given_two_points_on_each_line_segment
+		auto x1 = a.x;
+		auto y1 = a.y;
+		auto x2 = b.x;
+		auto y2 = b.y;
+		auto x3 = q.x;
+		auto y3 = q.y;
+		auto x4 = r.x;
+		auto y4 = r.y;
+		auto tn = ((x1 - x3) * (y3 - y4)) -((y1 - y3) * (x3 - x4));
+		auto td = ((x1 - x2) * (y3 - y4)) -((y1 - y2) * (x3 - x4));
+		//FPE?
+		if (td == 0.0f || std::abs(td) < std::abs(tn) || (tn != 0.0f && max::Sign(td) != max::Sign(tn))) return false;
+		auto un = ((x1 - x3) * (y1 - y2)) - ((y1 - y3) * (x1 - x2));
+		auto ud = td; //((x1 - x2) * (y3 - y4)) - ((y1 - y2) * (x3 - x4))
+		//FPE?
+		if (ud == 0.0f || std::abs(ud) < std::abs(un) || (un != 0.0f && max::Sign(ud) != max::Sign(un))) return false;
+		auto t = tn / td;
+		//return Vec2(x1 + (t * (x2 - x1)), y1 + (t * (y2 - y1)))
+		return true;
+	}
 
 	inline Vector2 Vector2::Rotate(float radians) const {
 		float _x = (x * std::cos(radians)) - (y * std::sin(radians));

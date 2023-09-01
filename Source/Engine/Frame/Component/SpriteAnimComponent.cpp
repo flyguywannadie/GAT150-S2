@@ -60,7 +60,7 @@ namespace max {
 
 	void SpriteAnimComponent::UpdateSource()
 	{
-		vec2 cellSize = m_texture->GetSize() / Vector2{ m_sequence->numColumns, m_sequence->numRows };
+		vec2 cellSize = m_texture->GetSize() / Vector2{ m_sequence->numColumns, m_sequence->numRows};
 		int column = (frame - 1) % m_sequence->numColumns;
 		int row = (frame - 1) / m_sequence->numColumns;
 

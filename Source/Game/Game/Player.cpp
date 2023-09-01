@@ -37,11 +37,11 @@ namespace max {
 
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_A)) {
 			//transform.rotation -= max::DegToRad(1);
-			m_physicsComponent->ApplyTorque(-1 * g_time.GetDeltaTime());
+			m_physicsComponent->ApplyTorque(-1.5f * g_time.GetDeltaTime());
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_D)) {
 			//transform.rotation += max::DegToRad(1);
-			m_physicsComponent->ApplyTorque(1 * g_time.GetDeltaTime());
+			m_physicsComponent->ApplyTorque(1.5f * g_time.GetDeltaTime());
 		}
 		if (max::g_inputSystem.GetKeyDown(SDL_SCANCODE_W)) {
 			//transform.position += max::vec2{ 1,0 }.Rotate(transform.rotation);
@@ -52,12 +52,19 @@ namespace max {
 			m_physicsComponent->ApplyForce(max::vec2{ -1,0 }.Rotate(transform.rotation));
 		}
 
-		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_K)) {
-			auto enemy = INSTANTIATE(Enemy, "Enemy");
-			enemy->transform.position = { 100, 100 };
-			enemy->Initialize();
-			m_scene->Add(std::move(enemy));
+		auto walls = m_scene->GetActorByName("Walls")->GetComponent<ModelRenderComponent>();
+		if (walls) {
+			if (!walls->IsInside(transform.position)) {
+				m_physicsComponent->SetVelocity(0);
+			}
 		}
+
+		//if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_K)) {
+		//	auto enemy = INSTANTIATE(Enemy, "Enemy");
+		//	enemy->transform.position = { 100, 100 };
+		//	enemy->Initialize();
+		//	m_scene->Add(std::move(enemy));
+		//}
 
 
 		if (tag == "Stomping") {
@@ -71,33 +78,30 @@ namespace max {
 				tag = "No";
 			}
 		}
-		else if (max::g_inputSystem.GetKeyUpOnce(SDL_SCANCODE_SPACE)) {
+
+		else if (!max::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE)) {
 			transform.scale = m_grounded;
 
 			if (tag == "No") {
-				tag = "Stomping";
 
-				max::g_audioSystem.PlayOneShot("land", false);
+				//max::g_audioSystem.PlayOneShot("land", false);
 
 				max::EmitterData data;
 				data.burst = true;
-				data.burstCount = 200;
+				data.burstCount = 1;
 				data.spawnRate = 0;
 				data.angle = 0;
 				data.angleRange = max::Pi;
-				data.lifetimeMin = 0.5f;
-				data.lifetimeMin = 0.5f;
-				data.speedMin = 150;
-				data.speedMax = 150;
+				data.lifetimeMin = 5.5f;
+				data.lifetimeMin = 5.5f;
+				data.speedMin = 1;
+				data.speedMax = 1;
 				data.damping = 0.5f;
 				data.color = max::Color{ 0.5, 0.5, 0.5, 1 };
 				max::Transform t{ { transform.position.x, transform.position.y }, 0, 1 };
 				auto emitter = std::make_unique<max::Emitter>(t, data);
 				emitter->lifespan = 1.0f;
 				m_scene->Add(std::move(emitter));
-			}
-			else {
-				tag = "Player";
 			}
 		}
 
@@ -109,10 +113,10 @@ namespace max {
 		Actor::Draw(renderer);
 
 		if (CameraComponent::Instance().m_owner) {
-			renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
+			//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation)).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation)).y);
 
-			renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(CameraComponent::Instance().m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(CameraComponent::Instance().m_viewAngle))).y);
-			renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(CameraComponent::Instance().m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(CameraComponent::Instance().m_viewAngle))).y);
+			//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation + max::DegToRad(CameraComponent::Instance().m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation + max::DegToRad(CameraComponent::Instance().m_viewAngle))).y);
+			//renderer.DrawLine(transform.position.x, transform.position.y, (transform.position + max::vec2{ 1000,0 }.Rotate(transform.rotation - max::DegToRad(CameraComponent::Instance().m_viewAngle))).x, (transform.position + max::vec2{ 1000, 0 }.Rotate(transform.rotation - max::DegToRad(CameraComponent::Instance().m_viewAngle))).y);
 		}
 	}
 

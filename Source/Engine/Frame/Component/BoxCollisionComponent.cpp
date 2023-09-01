@@ -12,9 +12,11 @@ namespace max
 		auto component = m_owner->GetComponent<Box2DPhysicsComponent>();
 		if (component)
 		{
-			if (data.size.x == 0 && data.size.y == 0) {
+			if (data.size.x == 0 && data.size.y == 0) 
+			{
 				auto spriteComponent = m_owner->GetComponent<SpriteComponent>();
-				if (spriteComponent) {
+				if (spriteComponent) 
+				{
 					data.size = vec2{ spriteComponent->source.w, spriteComponent->source.h };
 				}
 			}

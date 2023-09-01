@@ -3,11 +3,13 @@
 
 namespace max 
 {
-	bool Scene::Initialize()
+	bool Scene::Initialize(bool force)
 	{
 		for (auto& actor : m_actors)
 		{
-			actor->Initialize();
+			if (!actor->persistant || force) {
+				actor->Initialize();
+			}
 		}
 
 		return true;

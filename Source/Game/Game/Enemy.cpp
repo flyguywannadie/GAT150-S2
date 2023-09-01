@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Renderer/Renderer.h"
 #include "Player.h"
+#include "Frame/Component/CameraComponent.h"
 
 namespace max
 {
@@ -12,7 +13,9 @@ namespace max
 
 		m_health = 10;
 
-		speed = 0;
+		//speed = 0;
+
+		//CameraComponent::Instance().m_owner = this;
 
 		transform.position = vec2{random(g_renderer.GetWidth()),random(g_renderer.GetHeight()) };
 
@@ -28,10 +31,10 @@ namespace max
 		Player* player = m_scene->GetActor<Player>();
 		if (player) {
 			max::Vector2 direction = player->transform.position - transform.position;
-			transform.rotation = direction.Angle() - 90.0f;
+			transform.rotation = direction.Angle();
 		}
 
-		max::vec2 forward = max::vec2{ 0,1 }.Rotate(transform.rotation);
+		max::vec2 forward = max::vec2{ 1,0 }.Rotate(transform.rotation);
 		//transform.position += (forward * speed) * max::g_time.GetDeltaTime();
 		//transform.position.x = max::Wrap(transform.position.x, (float)max::g_renderer.GetWidth());
 		//transform.position.y = max::Wrap(transform.position.y, (float)max::g_renderer.GetHeight());
@@ -43,7 +46,7 @@ namespace max
 	void Enemy::OnCollisionEnter(Actor* other)
 	{
 		if (other->tag == "Stomping") {
-			m_health = 0;
+			
 		}
 
 		if (m_health <= 0 && !destroyed) {
