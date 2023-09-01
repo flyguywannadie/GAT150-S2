@@ -79,7 +79,7 @@ namespace max {
 			}
 		}
 
-		else if (!max::g_inputSystem.GetKeyDown(SDL_SCANCODE_SPACE)) {
+		else if (max::g_inputSystem.GetKeyUpOnce(SDL_SCANCODE_SPACE)) {
 			transform.scale = m_grounded;
 
 			if (tag == "No") {
@@ -88,15 +88,15 @@ namespace max {
 
 				max::EmitterData data;
 				data.burst = true;
-				data.burstCount = 1;
+				data.burstCount = 1000;
 				data.spawnRate = 0;
 				data.angle = 0;
 				data.angleRange = max::Pi;
-				data.lifetimeMin = 5.5f;
-				data.lifetimeMin = 5.5f;
-				data.speedMin = 1;
-				data.speedMax = 1;
-				data.damping = 0.5f;
+				data.lifetimeMin = 15.5f;
+				data.lifetimeMin = 15.5f;
+				data.speedMin = 100;
+				data.speedMax = 100;
+				data.damping = 0.01f;
 				data.color = max::Color{ 0.5, 0.5, 0.5, 1 };
 				max::Transform t{ { transform.position.x, transform.position.y }, 0, 1 };
 				auto emitter = std::make_unique<max::Emitter>(t, data);

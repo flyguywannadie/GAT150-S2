@@ -2,6 +2,8 @@
 #include "Renderer.h"
 #include "Frame/Component/CameraComponent.h"
 #include "Frame/Actor.h"
+#include "Frame/Scene.h"
+#include "Frame/Component/ModelRenderComponent.h"
 
 namespace max
 {
@@ -14,6 +16,12 @@ namespace max
 			return;
 		}
 		m_data.prevPosition = m_data.position;
+		if (CameraComponent::Instance().m_owner) {
+			auto insidewalls = CameraComponent::Instance().m_owner->m_scene->GetActorByName("Walls")->GetComponent<ModelRenderComponent>()->IsInside(m_data.position);
+			if (!insidewalls) {
+				m_data.velocity = 0;
+			}
+		}
 		m_data.position += m_data.velocity * dt;
 		m_data.velocity *= std::pow(1.0f - m_data.damping, dt);
 	}
