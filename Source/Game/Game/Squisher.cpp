@@ -21,7 +21,7 @@ bool Squisher::Initialize()
 	// Create Font/Text
 	m_aeromaxfont = GET_RESOURCE(max::Font, "AEROMAX-Bold.ttf", 50);
 	m_speedracerfont = GET_RESOURCE(max::Font, "RaceStripeDemoRegular.ttf", 50);
-	m_orangejuicefont = GET_RESOURCE(max::Font, "orange juice 2.0.ttf", 30);
+	m_orangejuicefont = GET_RESOURCE(max::Font, "orange juice 2.0.ttf", 64);
 	m_mondeur = GET_RESOURCE(max::Font, "data-latin.ttf", 30);
 
 	m_gameOverText = std::make_unique<max::Text>(m_speedracerfont);

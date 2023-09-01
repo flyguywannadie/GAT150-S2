@@ -19,3 +19,4 @@ INFO: EventManager.cpp(18) Event subscribed: AddPoints
 INFO: EventManager.cpp(18) Event subscribed: PlayerDead
 INFO: Squisher.cpp(76) START LEVEL
 INFO: Squisher.cpp(103) START LEVEL 2
+INFO: Squisher.cpp(76) START LEVEL

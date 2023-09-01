@@ -112,9 +112,9 @@
 			"components": [
 				{
 					"type": "TextRenderComponent",
-					"fontName": "RaceStripeDemoRegular.ttf",
+					"fontName": "orange juice 2.0.ttf",
 					"fontSize": 50,
-					"text": "SQUISHER"
+					"text": "SQUISHER 64"
 				}
 			]
 		},
