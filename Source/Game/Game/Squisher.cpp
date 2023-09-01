@@ -14,6 +14,8 @@
 
 #include "Frame/Component/CameraComponent.h"
 
+#include "Frame/Component/TextRenderComponent.h"
+
 bool Squisher::Initialize()
 {
 	// Create Font/Text
@@ -33,6 +35,8 @@ bool Squisher::Initialize()
 	m_scene = std::make_unique<max::Scene>();
 	m_scene->Load("scenes/scene.json");
 	m_scene->Initialize();
+
+	m_scene->GetActorByName("Score")->active = false;
 
 	//for (int i = 0; i < 10; i++) {
 	//	std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(max::randomf(75.0f, 200.0f), max::Pi, max::Transform{ {max::random(800), max::random(600)}, max::randomf(0, 360), 2 }, max::g_ModelManager.Get("ship.txt"));
@@ -61,15 +65,20 @@ void Squisher::Update(float dt)
 	{
 	case Squisher::eState::Title:
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
+			score = 0;
 			m_scene->GetActorByName("Background")->active = false;
 			m_scene->GetActorByName("Title")->active = false;
 			m_state = eState::StartLevel1;
+			m_stateTimer = 3.0f;
 		}
 		break;
 	case Squisher::eState::StartLevel1:
 		INFO_LOG("START LEVEL");
 		m_scene->RemoveAll();
 		{
+			enemiesLeft = 3;
+			m_scene->GetActorByName("Score")->active = true;
+
 			auto player = INSTANTIATE(Player, "Player");
 			player->Initialize();
 			m_scene->Add(std::move(player));
@@ -77,6 +86,41 @@ void Squisher::Update(float dt)
 			auto walls = INSTANTIATE(Walls, "Walls");
 			walls->transform.position = { 400, 300 };
 			walls->Initialize();
+
+			for (int i = 0; i < enemiesLeft; i++) {
+				auto enemy = INSTANTIATE(Enemy, "Enemy");
+				enemy->transform.position = walls->transform.position + max::vec2{ max::randomf(max::g_renderer.GetWidth() * (walls->transform.scale/20), -max::g_renderer.GetWidth() * (walls->transform.scale / 20))
+					, max::randomf(max::g_renderer.GetHeight() * (walls->transform.scale / 20), -max::g_renderer.GetHeight() * (walls->transform.scale / 20)) };
+				enemy->Initialize();
+				m_scene->Add(std::move(enemy));
+			}
+
+			m_scene->Add(std::move(walls));
+		}
+		m_state = eState::Gaming;
+		break;
+	case Squisher::eState::StartLevel2:
+		INFO_LOG("START LEVEL 2");
+		m_scene->RemoveAll();
+		{
+			enemiesLeft = 5;
+			auto player = INSTANTIATE(Player, "Player");
+			player->Initialize();
+			m_scene->Add(std::move(player));
+
+			auto walls = INSTANTIATE(Walls, "Walls");
+			walls->GetComponent<max::ModelRenderComponent>()->modelName = "Squisher/BigWalls.txt";
+			walls->transform.position = { 400, 300 };
+			walls->Initialize();
+
+			for (int i = 0; i < enemiesLeft; i++) {
+				auto enemy = INSTANTIATE(Enemy, "Enemy");
+				enemy->transform.position = walls->transform.position + max::vec2{ max::randomf(max::g_renderer.GetWidth(), -max::g_renderer.GetWidth())
+					, max::randomf(max::g_renderer.GetHeight(), -max::g_renderer.GetHeight()) };
+				enemy->Initialize();
+				m_scene->Add(std::move(enemy));
+			}
+
 			m_scene->Add(std::move(walls));
 		}
 		m_state = eState::Gaming;
@@ -88,14 +132,27 @@ void Squisher::Update(float dt)
 			max::CameraComponent::Instance().m_owner = nullptr;
 		}
 
+		if (enemiesLeft <= 0) {
+			m_state = eState::TransferLevel;
+			m_stateTimer = 3.0f;
+		}
+
+		break;
+	case Squisher::eState::TransferLevel:
+		m_stateTimer -= dt;
+		if (m_stateTimer <= 0) {
+			m_state = eState::StartLevel2;
+		}
 		break;
 	case Squisher::eState::GameOver:
-		m_scene->RemoveAll();
 		m_stateTimer -= dt;
 		if (max::g_inputSystem.GetKeyDownOnce(SDL_SCANCODE_SPACE)) {
 			m_stateTimer = 0;
 		}
 		if (m_stateTimer <= 0) {
+			m_scene->GetActorByName("Score")->active = false;
+			score = 0;
+			m_scene->RemoveAll();
 			m_state = eState::Title;
 			m_scene->GetActorByName("Background")->active = true;
 			m_scene->GetActorByName("Title")->active = true;
@@ -124,7 +181,12 @@ void Squisher::Draw(max::Renderer& renderer)
 
 void Squisher::AddPoints(const max::Event& event)
 {
-	
+	max::g_audioSystem.PlayOneShot("hit", false);
+	score = score + 100;
+	std::string scoretext = "SCORE " + std::to_string(score);
+	std::cout << scoretext << std::endl;
+	enemiesLeft--;
+	m_scene->GetActorByName("Score")->GetComponent<max::TextRenderComponent>()->SetText(scoretext);
 }
 
 void Squisher::OnPlayerDead(const max::Event& event)

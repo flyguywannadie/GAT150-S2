@@ -9,7 +9,7 @@ class Squisher : public max::Game, max::IEventListener, public max::Singleton<Sq
 public:
 	enum class eState
 	{
-		Title, Gaming, StartLevel1, StartLevel2, StartLevel3, EndScreen, GameOver
+		Title, Gaming, StartLevel1, StartLevel2, StartLevel3, TransferLevel, EndScreen, GameOver
 	};
 
 public:
@@ -32,6 +32,8 @@ private:
 
 	float m_stateTimer = 0;
 
+	int enemiesLeft = 0;
+	int score = 0;
 
 	//std::unique_ptr<GameTrack> gametrack;
 

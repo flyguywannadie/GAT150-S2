@@ -19,10 +19,10 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Squisher.cpp">
+    <ClCompile Include="Walls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Walls.cpp">
+    <ClCompile Include="Squisher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -11,6 +11,7 @@ namespace max
 		virtual void ApplyTorque(float torque) = 0;
 
 		virtual void SetVelocity(const vec2& velocity) { this->m_velocity = velocity; }
+		virtual void SetTorque(float torque) = 0;
 
 	public:
 		vec2 m_velocity;

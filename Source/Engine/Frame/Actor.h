@@ -32,7 +32,6 @@ namespace max
 		virtual void OnCollisionEnter(Actor* other) {}
 		virtual void OnCollisionExit(Actor* other) {}
 
-		friend class Squisher;
 		friend class Scene;
 
 		class Scene* m_scene = nullptr;

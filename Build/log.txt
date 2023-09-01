@@ -17,4 +17,5 @@ INFO: Factory.h(75) Prototype Class Registered: Player
 INFO: Factory.h(75) Prototype Class Registered: Walls
 INFO: EventManager.cpp(18) Event subscribed: AddPoints
 INFO: EventManager.cpp(18) Event subscribed: PlayerDead
-INFO: Squisher.cpp(70) START LEVEL
+INFO: Squisher.cpp(76) START LEVEL
+INFO: Squisher.cpp(103) START LEVEL 2

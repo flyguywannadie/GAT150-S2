@@ -18,6 +18,7 @@ namespace max
 		virtual void ApplyForce(const vec2& force) override;
 		virtual void ApplyTorque(float torque) override;
 		virtual void SetVelocity(const vec2& velocity) override;
+		virtual void SetTorque(float torque) override;
 
 		friend class BoxCollisionComponent;
 

@@ -21,6 +21,11 @@ namespace max
 		//
 	}
 
+	void EnginePhysicsComponent::SetTorque(float torque)
+	{
+		//
+	}
+
 	void max::EnginePhysicsComponent::Read(const json_t& value) {
 		//
 	}

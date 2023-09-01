@@ -21,15 +21,15 @@ namespace max
 
 		void Update(float dt) override;
 		void OnCollisionEnter(Actor* other) override;
+		void OnCollisionExit(Actor* other) override;
 		void Draw(max::Renderer& renderer) override;
+
+		bool squishin = false;
+		bool beinsqished = false;
 
 	private:
 		float speed = 0;
 		float m_turnRate = 0;
-		int m_health = 0;
-
-		float m_grounded = 3.0f;
-		float m_jumping = 5.0f;
 
 
 		max::PhysicsComponent* m_physicsComponent = nullptr;
